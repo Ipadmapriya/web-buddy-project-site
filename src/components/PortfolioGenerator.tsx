@@ -8,6 +8,7 @@ import EducationForm from "@/components/EducationForm";
 import ProjectsForm from "@/components/ProjectsForm";
 import SkillsForm from "@/components/SkillsForm";
 import AchievementsForm from "@/components/AchievementsForm";
+import PortfolioPreview from "@/components/PortfolioPreview";
 import { Check, ChevronRight } from "lucide-react";
 
 const steps = [
@@ -67,6 +68,22 @@ const PortfolioGenerator = () => {
   const handleAchievementsSubmit = (data: any) => {
     setPortfolioData({ ...portfolioData, achievements: data });
     setCurrentStep("preview");
+  };
+
+  const handleStartOver = () => {
+    setCurrentStep("personal");
+    setPortfolioData({
+      personal: {},
+      education: [],
+      experience: [],
+      projects: [],
+      skills: {
+        technical: [],
+        soft: [],
+        interests: []
+      },
+      achievements: [],
+    });
   };
 
   const getCurrentStepIndex = () => {
@@ -144,25 +161,7 @@ const PortfolioGenerator = () => {
         {currentStep === "skills" && <SkillsForm onFormSubmit={handleSkillsSubmit} />}
         {currentStep === "achievements" && <AchievementsForm onFormSubmit={handleAchievementsSubmit} />}
         
-        {currentStep === "preview" && (
-          <Card className="w-full p-6">
-            <h2 className="text-xl font-bold mb-4">Preview Your Portfolio</h2>
-            <p className="text-muted-foreground mb-4">
-              Your portfolio is being generated. In the full implementation, you would see a preview here
-              and be able to download or get a link to your portfolio.
-            </p>
-            <pre className="bg-gray-100 p-4 rounded-md text-xs overflow-auto max-h-96">
-              {JSON.stringify(portfolioData, null, 2)}
-            </pre>
-            <Button 
-              onClick={() => setCurrentStep("personal")}
-              variant="outline"
-              className="w-full mt-4"
-            >
-              Start Over
-            </Button>
-          </Card>
-        )}
+        {currentStep === "preview" && <PortfolioPreview portfolioData={portfolioData} onStartOver={handleStartOver} />}
       </div>
     </div>
   );
