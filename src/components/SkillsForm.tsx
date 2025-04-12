@@ -1,10 +1,7 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, Trash2 } from "lucide-react";
 
 interface Skill {
@@ -15,7 +12,12 @@ interface Skill {
 }
 
 interface SkillsFormProps {
-  onFormSubmit: (data: { technical: Skill[], soft: Skill[], interests: string[] }) => void;
+  onFormSubmit: (data: { 
+    technicalSkills: Skill[], 
+    softSkills: Skill[], 
+    interests: string[], 
+    hobbies: string[] 
+  }) => void;
 }
 
 const SkillsForm = ({ onFormSubmit }: SkillsFormProps) => {
@@ -28,6 +30,7 @@ const SkillsForm = ({ onFormSubmit }: SkillsFormProps) => {
   ]);
   
   const [interests, setInterests] = React.useState<string[]>([""]);
+  const [hobbies, setHobbies] = React.useState<string[]>([""]);
 
   const handleTechnicalChange = (id: string, field: keyof Skill, value: string) => {
     setTechnicalSkills((prev) =>
@@ -49,6 +52,14 @@ const SkillsForm = ({ onFormSubmit }: SkillsFormProps) => {
     });
   };
 
+  const handleHobbyChange = (index: number, value: string) => {
+    setHobbies((prev) => {
+      const newHobbies = [...prev];
+      newHobbies[index] = value;
+      return newHobbies;
+    });
+  };
+
   const handleAddTechnical = () => {
     setTechnicalSkills((prev) => [
       ...prev,
@@ -65,6 +76,10 @@ const SkillsForm = ({ onFormSubmit }: SkillsFormProps) => {
 
   const handleAddInterest = () => {
     setInterests((prev) => [...prev, ""]);
+  };
+
+  const handleAddHobby = () => {
+    setHobbies((prev) => [...prev, ""]);
   };
 
   const handleRemoveTechnical = (id: string) => {
@@ -85,12 +100,19 @@ const SkillsForm = ({ onFormSubmit }: SkillsFormProps) => {
     }
   };
 
+  const handleRemoveHobby = (index: number) => {
+    if (hobbies.length > 1) {
+      setHobbies((prev) => prev.filter((_, i) => i !== index));
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onFormSubmit({
-      technical: technicalSkills,
-      soft: softSkills,
-      interests: interests.filter(i => i.trim() !== "")
+      technicalSkills,
+      softSkills,
+      interests: interests.filter(i => i.trim() !== ""),
+      hobbies: hobbies.filter(h => h.trim() !== "")
     });
   };
 
@@ -201,7 +223,7 @@ const SkillsForm = ({ onFormSubmit }: SkillsFormProps) => {
           </div>
 
           <div>
-            <h3 className="text-lg font-medium mb-4">Interests & Hobbies</h3>
+            <h3 className="text-lg font-medium mb-4">Interests</h3>
             <div className="space-y-4">
               {interests.map((interest, index) => (
                 <div key={index} className="flex items-center space-x-4">
@@ -226,6 +248,36 @@ const SkillsForm = ({ onFormSubmit }: SkillsFormProps) => {
               ))}
               <Button type="button" variant="outline" size="sm" onClick={handleAddInterest}>
                 <Plus className="h-4 w-4 mr-2" /> Add Interest
+              </Button>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-medium mb-4">Hobbies</h3>
+            <div className="space-y-4">
+              {hobbies.map((hobby, index) => (
+                <div key={index} className="flex items-center space-x-4">
+                  <div className="flex-1">
+                    <Input
+                      value={hobby}
+                      onChange={(e) => handleHobbyChange(index, e.target.value)}
+                      placeholder="Cooking, Hiking, etc."
+                    />
+                  </div>
+                  {hobbies.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleRemoveHobby(index)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+              <Button type="button" variant="outline" size="sm" onClick={handleAddHobby}>
+                <Plus className="h-4 w-4 mr-2" /> Add Hobby
               </Button>
             </div>
           </div>

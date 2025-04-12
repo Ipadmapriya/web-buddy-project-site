@@ -12,9 +12,10 @@ interface PortfolioPreviewProps {
     experience: any[];
     projects: any[];
     skills: {
-      technical: string[];
-      soft: string[];
+      technicalSkills: any[];
+      softSkills: any[];
       interests: string[];
+      hobbies: string[];
     };
     achievements: any[];
   };
@@ -177,31 +178,31 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onSt
       {/* Skills */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Skills & Interests</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {portfolioData.skills.technical.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {portfolioData.skills.technicalSkills.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Technical Skills</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="list-disc pl-5 space-y-1">
-                  {portfolioData.skills.technical.map((skill, index) => (
-                    <li key={index}>{skill}</li>
+                  {portfolioData.skills.technicalSkills.map((skill, index) => (
+                    <li key={index}>{skill.name} ({skill.proficiency})</li>
                   ))}
                 </ul>
               </CardContent>
             </Card>
           )}
           
-          {portfolioData.skills.soft.length > 0 && (
+          {portfolioData.skills.softSkills.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Soft Skills</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="list-disc pl-5 space-y-1">
-                  {portfolioData.skills.soft.map((skill, index) => (
-                    <li key={index}>{skill}</li>
+                  {portfolioData.skills.softSkills.map((skill, index) => (
+                    <li key={index}>{skill.name} ({skill.proficiency})</li>
                   ))}
                 </ul>
               </CardContent>
@@ -211,12 +212,27 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onSt
           {portfolioData.skills.interests.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Interests & Hobbies</CardTitle>
+                <CardTitle className="text-lg">Interests</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="list-disc pl-5 space-y-1">
                   {portfolioData.skills.interests.map((interest, index) => (
                     <li key={index}>{interest}</li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
+
+          {portfolioData.skills.hobbies.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Hobbies</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc pl-5 space-y-1">
+                  {portfolioData.skills.hobbies.map((hobby, index) => (
+                    <li key={index}>{hobby}</li>
                   ))}
                 </ul>
               </CardContent>

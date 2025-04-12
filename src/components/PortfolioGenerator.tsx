@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -29,9 +28,10 @@ const PortfolioGenerator = () => {
     experience: [],
     projects: [],
     skills: {
-      technical: [],
-      soft: [],
-      interests: []
+      technicalSkills: [],
+      softSkills: [],
+      interests: [],
+      hobbies: []
     },
     achievements: [],
   });
@@ -78,9 +78,10 @@ const PortfolioGenerator = () => {
       experience: [],
       projects: [],
       skills: {
-        technical: [],
-        soft: [],
-        interests: []
+        technicalSkills: [],
+        softSkills: [],
+        interests: [],
+        hobbies: []
       },
       achievements: [],
     });
