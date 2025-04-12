@@ -1,9 +1,13 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/ContactForm";
 import WorkExperienceForm from "@/components/WorkExperienceForm";
 import EducationForm from "@/components/EducationForm";
+import ProjectsForm from "@/components/ProjectsForm";
+import SkillsForm from "@/components/SkillsForm";
+import AchievementsForm from "@/components/AchievementsForm";
 import { Check, ChevronRight } from "lucide-react";
 
 const steps = [
@@ -23,7 +27,11 @@ const PortfolioGenerator = () => {
     education: [],
     experience: [],
     projects: [],
-    skills: [],
+    skills: {
+      technical: [],
+      soft: [],
+      interests: []
+    },
     achievements: [],
   });
 
@@ -45,9 +53,21 @@ const PortfolioGenerator = () => {
     setPortfolioData({ ...portfolioData, experience: data });
     setCurrentStep("projects");
   };
-
-  // For now, let's keep a simple placeholder for projects, skills, and achievements
-  // We'll implement these in the next iteration
+  
+  const handleProjectsSubmit = (data: any) => {
+    setPortfolioData({ ...portfolioData, projects: data });
+    setCurrentStep("skills");
+  };
+  
+  const handleSkillsSubmit = (data: any) => {
+    setPortfolioData({ ...portfolioData, skills: data });
+    setCurrentStep("achievements");
+  };
+  
+  const handleAchievementsSubmit = (data: any) => {
+    setPortfolioData({ ...portfolioData, achievements: data });
+    setCurrentStep("preview");
+  };
 
   const getCurrentStepIndex = () => {
     return steps.findIndex((step) => step.id === currentStep);
@@ -120,45 +140,9 @@ const PortfolioGenerator = () => {
         {currentStep === "personal" && <ContactForm onFormSubmit={handlePersonalInfoSubmit} />}
         {currentStep === "education" && <EducationForm onFormSubmit={handleEducationSubmit} />}
         {currentStep === "experience" && <WorkExperienceForm onFormSubmit={handleExperienceSubmit} />}
-        
-        {currentStep === "projects" && (
-          <Card className="w-full p-6">
-            <h2 className="text-xl font-bold mb-4">Projects</h2>
-            <p className="text-muted-foreground mb-4">Coming in the next iteration.</p>
-            <Button 
-              onClick={() => setCurrentStep("skills")}
-              className="w-full"
-            >
-              Continue <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Card>
-        )}
-        
-        {currentStep === "skills" && (
-          <Card className="w-full p-6">
-            <h2 className="text-xl font-bold mb-4">Skills</h2>
-            <p className="text-muted-foreground mb-4">Coming in the next iteration.</p>
-            <Button 
-              onClick={() => setCurrentStep("achievements")}
-              className="w-full"
-            >
-              Continue <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Card>
-        )}
-        
-        {currentStep === "achievements" && (
-          <Card className="w-full p-6">
-            <h2 className="text-xl font-bold mb-4">Achievements</h2>
-            <p className="text-muted-foreground mb-4">Coming in the next iteration.</p>
-            <Button 
-              onClick={() => setCurrentStep("preview")}
-              className="w-full"
-            >
-              Continue to Preview <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Card>
-        )}
+        {currentStep === "projects" && <ProjectsForm onFormSubmit={handleProjectsSubmit} />}
+        {currentStep === "skills" && <SkillsForm onFormSubmit={handleSkillsSubmit} />}
+        {currentStep === "achievements" && <AchievementsForm onFormSubmit={handleAchievementsSubmit} />}
         
         {currentStep === "preview" && (
           <Card className="w-full p-6">
