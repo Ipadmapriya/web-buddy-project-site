@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import ContactForm from "@/components/ContactForm";
 import WorkExperienceForm from "@/components/WorkExperienceForm";
 import EducationForm from "@/components/EducationForm";
@@ -20,7 +23,29 @@ const steps = [
   { id: "preview", name: "Preview" },
 ];
 
+// Modify steps based on user type
+const getStepsForUserType = (userType?: string) => {
+  if (!userType) return steps;
+
+  const userSteps = [...steps];
+  
+  // Students don't need work experience
+  if (userType.startsWith("student")) {
+    return userSteps.filter(step => step.id !== "experience");
+  }
+  
+  // Freshers might have limited work experience
+  if (userType.startsWith("fresher")) {
+    return userSteps;
+  }
+  
+  // Experienced users have all steps
+  return userSteps;
+};
+
 const PortfolioGenerator = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState("personal");
   const [portfolioData, setPortfolioData] = useState({
     personal: {},
@@ -35,6 +60,22 @@ const PortfolioGenerator = () => {
     },
     achievements: [],
   });
+  
+  const [activeSteps, setActiveSteps] = useState(steps);
+
+  useEffect(() => {
+    // Redirect to login if not authenticated
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    
+    // Set steps based on user type
+    if (user.userType) {
+      const userSteps = getStepsForUserType(user.userType);
+      setActiveSteps(userSteps);
+    }
+  }, [user, navigate]);
 
   const handleStepChange = (step: string) => {
     setCurrentStep(step);
@@ -47,7 +88,12 @@ const PortfolioGenerator = () => {
 
   const handleEducationSubmit = (data: any) => {
     setPortfolioData({ ...portfolioData, education: data });
-    setCurrentStep("experience");
+    // Skip to projects for students
+    if (user?.userType?.startsWith("student")) {
+      setCurrentStep("projects");
+    } else {
+      setCurrentStep("experience");
+    }
   };
 
   const handleExperienceSubmit = (data: any) => {
@@ -88,17 +134,31 @@ const PortfolioGenerator = () => {
   };
 
   const getCurrentStepIndex = () => {
-    return steps.findIndex((step) => step.id === currentStep);
+    return activeSteps.findIndex((step) => step.id === currentStep);
   };
+
+  if (!user) {
+    return (
+      <div className="container mx-auto py-8 px-4 text-center">
+        <h2 className="text-2xl font-bold">Please log in to create your portfolio</h2>
+        <Button onClick={() => navigate("/auth")} className="mt-4">
+          Go to Login
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold text-center mb-8">Portfolio Generator</h1>
+      <h1 className="text-3xl font-bold text-center mb-2">Portfolio Generator</h1>
+      <p className="text-center mb-8">
+        User Type: {user.userType ? user.userType.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' - ') : 'Standard'}
+      </p>
 
       {/* Progress Steps */}
       <div className="mb-8">
         <div className="hidden sm:flex items-center justify-between mb-4">
-          {steps.map((step, index) => (
+          {activeSteps.map((step, index) => (
             <React.Fragment key={step.id}>
               <button
                 onClick={() => handleStepChange(step.id)}
@@ -123,7 +183,7 @@ const PortfolioGenerator = () => {
                 </div>
                 <span className="text-xs">{step.name}</span>
               </button>
-              {index < steps.length - 1 && (
+              {index < activeSteps.length - 1 && (
                 <div className="w-full h-1 bg-gray-200 flex-1 mx-2">
                   <div
                     className="h-full bg-green-500"
@@ -140,13 +200,13 @@ const PortfolioGenerator = () => {
         {/* Mobile Progress */}
         <div className="sm:hidden mb-4">
           <p className="text-center font-medium">
-            Step {getCurrentStepIndex() + 1} of {steps.length}: {steps[getCurrentStepIndex()].name}
+            Step {getCurrentStepIndex() + 1} of {activeSteps.length}: {activeSteps[getCurrentStepIndex()].name}
           </p>
           <div className="w-full h-2 bg-gray-200 rounded-full mt-2">
             <div
               className="h-full bg-primary rounded-full"
               style={{
-                width: `${((getCurrentStepIndex() + 1) / steps.length) * 100}%`,
+                width: `${((getCurrentStepIndex() + 1) / activeSteps.length) * 100}%`,
               }}
             ></div>
           </div>
