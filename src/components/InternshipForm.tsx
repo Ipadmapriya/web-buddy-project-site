@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Internship {
   id: string;
@@ -23,6 +24,7 @@ interface InternshipFormProps {
 }
 
 const InternshipForm = ({ onFormSubmit }: InternshipFormProps) => {
+  const { toast } = useToast();
   const [internships, setInternships] = React.useState<Internship[]>([
     {
       id: Date.now().toString(),
@@ -66,6 +68,21 @@ const InternshipForm = ({ onFormSubmit }: InternshipFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Basic validation
+    const hasEmptyRequiredFields = internships.some(
+      internship => !internship.company || !internship.designation || !internship.period
+    );
+    
+    if (hasEmptyRequiredFields) {
+      toast({
+        variant: "destructive",
+        title: "Missing information",
+        description: "Please fill in all required fields (Company, Designation, and Period).",
+      });
+      return;
+    }
+    
     onFormSubmit(internships);
   };
 
@@ -94,7 +111,7 @@ const InternshipForm = ({ onFormSubmit }: InternshipFormProps) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor={`company-${internship.id}`}>Company Name</Label>
+                  <Label htmlFor={`company-${internship.id}`}>Company Name *</Label>
                   <Input
                     id={`company-${internship.id}`}
                     value={internship.company}
@@ -104,7 +121,7 @@ const InternshipForm = ({ onFormSubmit }: InternshipFormProps) => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor={`designation-${internship.id}`}>Designation</Label>
+                  <Label htmlFor={`designation-${internship.id}`}>Designation *</Label>
                   <Input
                     id={`designation-${internship.id}`}
                     value={internship.designation}
@@ -114,7 +131,7 @@ const InternshipForm = ({ onFormSubmit }: InternshipFormProps) => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor={`period-${internship.id}`}>Internship Period</Label>
+                  <Label htmlFor={`period-${internship.id}`}>Internship Period *</Label>
                   <Input
                     id={`period-${internship.id}`}
                     value={internship.period}
