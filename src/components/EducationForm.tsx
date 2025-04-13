@@ -16,6 +16,8 @@ interface Education {
   duration: string;
   backlogs: string;
   passoutYear: string;
+  major?: string;
+  courseName?: string;
 }
 
 interface EducationFormProps {
@@ -45,6 +47,7 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
       duration: "",
       backlogs: "0",
       passoutYear: "",
+      major: "",
     },
     {
       id: "undergraduate",
@@ -56,6 +59,7 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
       duration: "",
       backlogs: "0",
       passoutYear: "",
+      courseName: "",
     },
   ]);
 
@@ -78,6 +82,7 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
         duration: "",
         backlogs: "0",
         passoutYear: "",
+        courseName: "",
       },
     ]);
   };
@@ -158,27 +163,59 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
                     required
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`duration-${education.id}`}>Duration (Years)</Label>
-                  <Input
-                    id={`duration-${education.id}`}
-                    value={education.duration}
-                    onChange={(e) => handleChange(education.id, "duration", e.target.value)}
-                    placeholder="2, 3, 4, etc."
-                    required
-                  />
-                </div>
-                {education.level !== "10th Standard" && education.level !== "12th Standard" && (
+                
+                {education.level === "12th Standard" && (
                   <div className="space-y-2">
-                    <Label htmlFor={`backlogs-${education.id}`}>Active Backlogs</Label>
+                    <Label htmlFor={`major-${education.id}`}>Major/Stream</Label>
                     <Input
-                      id={`backlogs-${education.id}`}
-                      value={education.backlogs}
-                      onChange={(e) => handleChange(education.id, "backlogs", e.target.value)}
-                      placeholder="0, 1, 2, etc."
+                      id={`major-${education.id}`}
+                      value={education.major || ""}
+                      onChange={(e) => handleChange(education.id, "major", e.target.value)}
+                      placeholder="Computer Science, Mathematics, etc."
+                      required
                     />
                   </div>
                 )}
+                
+                {(education.level === "Undergraduate" || education.level === "Postgraduate") && (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor={`courseName-${education.id}`}>Course Name</Label>
+                      <Input
+                        id={`courseName-${education.id}`}
+                        value={education.courseName || ""}
+                        onChange={(e) => handleChange(education.id, "courseName", e.target.value)}
+                        placeholder="B.Tech, BCA, MCA, etc."
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`duration-${education.id}`}>Duration (Years)</Label>
+                      <Input
+                        id={`duration-${education.id}`}
+                        value={education.duration}
+                        onChange={(e) => handleChange(education.id, "duration", e.target.value)}
+                        placeholder="2, 3, 4, etc."
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`backlogs-${education.id}`}>Active Backlogs</Label>
+                      <Input
+                        id={`backlogs-${education.id}`}
+                        value={education.backlogs}
+                        onChange={(e) => handleChange(education.id, "backlogs", e.target.value)}
+                        placeholder="0, 1, 2, etc."
+                        required
+                      />
+                    </div>
+                  </>
+                )}
+                
+                {education.level === "10th Standard" && (
+                  <div className="md:col-span-2"></div> // Empty space to maintain grid layout
+                )}
+                
                 <div className="space-y-2">
                   <Label htmlFor={`passout-${education.id}`}>Year of Passing</Label>
                   <Input

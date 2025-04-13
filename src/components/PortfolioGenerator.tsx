@@ -10,12 +10,14 @@ import EducationForm from "@/components/EducationForm";
 import ProjectsForm from "@/components/ProjectsForm";
 import SkillsForm from "@/components/SkillsForm";
 import AchievementsForm from "@/components/AchievementsForm";
+import InternshipForm from "@/components/InternshipForm";
 import PortfolioPreview from "@/components/PortfolioPreview";
 import { Check, ChevronRight } from "lucide-react";
 
 const steps = [
   { id: "personal", name: "Personal Information" },
   { id: "education", name: "Education" },
+  { id: "internships", name: "Internships" },
   { id: "experience", name: "Work Experience" },
   { id: "projects", name: "Projects" },
   { id: "skills", name: "Skills" },
@@ -34,9 +36,9 @@ const getStepsForUserType = (userType?: string) => {
     return userSteps.filter(step => step.id !== "experience");
   }
   
-  // Freshers might have limited work experience
+  // Freshers don't need work experience
   if (userType.startsWith("fresher")) {
-    return userSteps;
+    return userSteps.filter(step => step.id !== "experience");
   }
   
   // Experienced users have all steps
@@ -50,6 +52,7 @@ const PortfolioGenerator = () => {
   const [portfolioData, setPortfolioData] = useState({
     personal: {},
     education: [],
+    internships: [],
     experience: [],
     projects: [],
     skills: {
@@ -88,8 +91,14 @@ const PortfolioGenerator = () => {
 
   const handleEducationSubmit = (data: any) => {
     setPortfolioData({ ...portfolioData, education: data });
-    // Skip to projects for students
-    if (user?.userType?.startsWith("student")) {
+    setCurrentStep("internships");
+  };
+
+  const handleInternshipsSubmit = (data: any) => {
+    setPortfolioData({ ...portfolioData, internships: data });
+    
+    // Skip to projects for students and freshers
+    if (user?.userType?.startsWith("student") || user?.userType?.startsWith("fresher")) {
       setCurrentStep("projects");
     } else {
       setCurrentStep("experience");
@@ -121,6 +130,7 @@ const PortfolioGenerator = () => {
     setPortfolioData({
       personal: {},
       education: [],
+      internships: [],
       experience: [],
       projects: [],
       skills: {
@@ -217,6 +227,7 @@ const PortfolioGenerator = () => {
       <div className="max-w-3xl mx-auto">
         {currentStep === "personal" && <ContactForm onFormSubmit={handlePersonalInfoSubmit} />}
         {currentStep === "education" && <EducationForm onFormSubmit={handleEducationSubmit} />}
+        {currentStep === "internships" && <InternshipForm onFormSubmit={handleInternshipsSubmit} />}
         {currentStep === "experience" && <WorkExperienceForm onFormSubmit={handleExperienceSubmit} />}
         {currentStep === "projects" && <ProjectsForm onFormSubmit={handleProjectsSubmit} />}
         {currentStep === "skills" && <SkillsForm onFormSubmit={handleSkillsSubmit} />}
