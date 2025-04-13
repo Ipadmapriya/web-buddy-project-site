@@ -15,6 +15,7 @@ interface Education {
   educationMode: string;
   duration: string;
   backlogs: string;
+  totalBacklogs: string;  // Added new field
   passoutYear: string;
   major?: string;
   courseName?: string;
@@ -35,6 +36,7 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
       educationMode: "",
       duration: "",
       backlogs: "0",
+      totalBacklogs: "0",
       passoutYear: "",
     },
     {
@@ -46,6 +48,7 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
       educationMode: "",
       duration: "",
       backlogs: "0",
+      totalBacklogs: "0",
       passoutYear: "",
       major: "",
     },
@@ -58,6 +61,7 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
       educationMode: "",
       duration: "",
       backlogs: "0",
+      totalBacklogs: "0",
       passoutYear: "",
       courseName: "",
     },
@@ -205,6 +209,16 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
                         id={`backlogs-${education.id}`}
                         value={education.backlogs}
                         onChange={(e) => handleChange(education.id, "backlogs", e.target.value)}
+                        placeholder="0, 1, 2, etc."
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor={`totalBacklogs-${education.id}`}>Total Backlogs</Label>
+                      <Input
+                        id={`totalBacklogs-${education.id}`}
+                        value={education.totalBacklogs}
+                        onChange={(e) => handleChange(education.id, "totalBacklogs", e.target.value)}
                         placeholder="0, 1, 2, etc."
                         required
                       />
