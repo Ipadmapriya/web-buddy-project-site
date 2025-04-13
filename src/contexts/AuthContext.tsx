@@ -66,12 +66,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error("User with this email already exists");
       }
       
-      // Store user with password for later authentication
-      const newUser = { ...userData, password: userData.password || "" };
+      // Create user object including password for authentication
+      const newUser = { 
+        ...userData,
+        // Ensure password is explicitly included
+        password: userData.password 
+      };
+      
+      // Store complete user data (including password) for authentication purposes
       users.push(newUser);
       localStorage.setItem("users", JSON.stringify(users));
       
-      // Create a user object without the password
+      // Create a user object without the password for the session
       const { password: _, ...safeUser } = newUser;
       
       setUser(safeUser);

@@ -22,25 +22,26 @@ export const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      if (email && password) {
-        await login(email, password);
-        toast({
-          title: "Success",
-          description: "Logged in successfully",
-        });
-        navigate("/");
-      } else {
+      if (!email || !password) {
         toast({
           variant: "destructive",
           title: "Error",
           description: "Please fill in all fields",
         });
+        return;
       }
-    } catch (error) {
+      
+      await login(email, password);
+      toast({
+        title: "Success",
+        description: "Logged in successfully",
+      });
+      navigate("/");
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Failed to log in",
-        description: "Please check your credentials and try again.",
+        description: error.message || "Please check your credentials and try again.",
       });
     } finally {
       setIsLoading(false);

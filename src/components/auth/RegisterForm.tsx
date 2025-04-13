@@ -47,7 +47,15 @@ export const RegisterForm = () => {
 
     try {
       if (name && username && email && password && userType) {
-        const userData = { name, username, email, userType };
+        // Include password explicitly in the userData object
+        const userData = { 
+          name, 
+          username, 
+          email, 
+          password, // Explicitly include password
+          userType 
+        };
+        
         await register(userData);
         toast({
           title: "Account created",
@@ -61,11 +69,11 @@ export const RegisterForm = () => {
           description: "Please fill in all fields.",
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Registration failed",
-        description: "There was an error registering your account.",
+        description: error.message || "There was an error registering your account.",
       });
     } finally {
       setIsLoading(false);
