@@ -85,6 +85,7 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
         educationMode: "",
         duration: "",
         backlogs: "0",
+        totalBacklogs: "0", // Added the missing totalBacklogs field
         passoutYear: "",
         courseName: "",
       },
