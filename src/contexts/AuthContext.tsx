@@ -34,9 +34,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      // Mock login until Supabase is connected
-      setUser({ email });
-      localStorage.setItem("user", JSON.stringify({ email }));
+      // Mock login - Check if user exists in localStorage
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const user = users.find((u: any) => u.email === email);
+      
+      if (!user || user.password !== password) {
+        throw new Error("Invalid credentials");
+      }
+      
+      // Create a user object without the password
+      const { password: _, ...safeUser } = user;
+      
+      setUser(safeUser);
+      localStorage.setItem("user", JSON.stringify(safeUser));
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -48,9 +58,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (userData: any) => {
     setIsLoading(true);
     try {
-      // Mock registration until Supabase is connected
-      setUser(userData);
-      localStorage.setItem("user", JSON.stringify(userData));
+      // Mock registration - Store in localStorage
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      
+      // Check if user with this email already exists
+      if (users.some((u: any) => u.email === userData.email)) {
+        throw new Error("User with this email already exists");
+      }
+      
+      // Store user with password for later authentication
+      const newUser = { ...userData, password: userData.password || "" };
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+      
+      // Create a user object without the password
+      const { password: _, ...safeUser } = newUser;
+      
+      setUser(safeUser);
+      localStorage.setItem("user", JSON.stringify(safeUser));
     } catch (error) {
       console.error("Registration error:", error);
       throw error;

@@ -14,6 +14,11 @@ const Navigation = () => {
     navigate("/");
   };
 
+  const formatUserType = (userType?: string) => {
+    if (!userType) return "";
+    return userType.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' - ');
+  };
+
   return (
     <header className="bg-background border-b">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -26,7 +31,14 @@ const Navigation = () => {
             <div className="flex items-center gap-2">
               <div className="hidden md:flex items-center gap-2">
                 <User size={18} />
-                <span>{user.email}</span>
+                <div className="flex flex-col text-sm">
+                  <span>{user.email}</span>
+                  {user.userType && (
+                    <span className="text-xs text-muted-foreground">
+                      {formatUserType(user.userType)}
+                    </span>
+                  )}
+                </div>
               </div>
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />

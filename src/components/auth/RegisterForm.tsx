@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const userTypes = [
   { value: "fresher-ug", label: "Fresher - Undergraduate" },
@@ -28,6 +29,7 @@ export const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,11 +46,9 @@ export const RegisterForm = () => {
     }
 
     try {
-      // Mock registration until Supabase is connected
       if (name && username && email && password && userType) {
-        // Simulate successful registration
         const userData = { name, username, email, userType };
-        localStorage.setItem("user", JSON.stringify(userData));
+        await register(userData);
         toast({
           title: "Account created",
           description: "You have successfully registered.",
