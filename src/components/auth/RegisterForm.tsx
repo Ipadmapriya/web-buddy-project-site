@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -14,8 +13,6 @@ const userTypes = [
   { value: "fresher-pg", label: "Fresher - Postgraduate" },
   { value: "experienced-ug", label: "Experienced - Undergraduate" },
   { value: "experienced-pg", label: "Experienced - Postgraduate" },
-  { value: "student-ug", label: "Student - Undergraduate" },
-  { value: "student-pg", label: "Student - Postgraduate" },
 ];
 
 export const RegisterForm = () => {
@@ -47,12 +44,11 @@ export const RegisterForm = () => {
 
     try {
       if (name && username && email && password && userType) {
-        // Include password explicitly in the userData object
         const userData = { 
           name, 
           username, 
           email, 
-          password, // Explicitly include password
+          password, 
           userType 
         };
         
