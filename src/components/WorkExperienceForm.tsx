@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,22 +20,27 @@ interface WorkExperience {
 
 interface WorkExperienceFormProps {
   onFormSubmit: (data: WorkExperience[]) => void;
+  initialData?: WorkExperience[];
 }
 
-const WorkExperienceForm = ({ onFormSubmit }: WorkExperienceFormProps) => {
-  const [experiences, setExperiences] = React.useState<WorkExperience[]>([
-    {
-      id: Date.now().toString(),
-      company: "",
-      designation: "",
-      yearsExperience: "",
-      employmentType: "",
-      teamSize: "",
-      projects: "",
-      responsibilities: "",
-      technologies: "",
-    },
-  ]);
+const WorkExperienceForm = ({ onFormSubmit, initialData = [] }: WorkExperienceFormProps) => {
+  const [experiences, setExperiences] = React.useState<WorkExperience[]>(
+    initialData && initialData.length > 0
+      ? initialData
+      : [
+          {
+            id: Date.now().toString(),
+            company: "",
+            designation: "",
+            yearsExperience: "",
+            employmentType: "",
+            teamSize: "",
+            projects: "",
+            responsibilities: "",
+            technologies: "",
+          },
+        ]
+  );
 
   const handleChange = (id: string, field: keyof WorkExperience, value: string) => {
     setExperiences((prev) =>

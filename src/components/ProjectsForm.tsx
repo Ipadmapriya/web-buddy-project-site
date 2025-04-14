@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,21 +19,26 @@ interface Project {
 
 interface ProjectsFormProps {
   onFormSubmit: (data: Project[]) => void;
+  initialData?: Project[];
 }
 
-const ProjectsForm = ({ onFormSubmit }: ProjectsFormProps) => {
-  const [projects, setProjects] = React.useState<Project[]>([
-    {
-      id: Date.now().toString(),
-      name: "",
-      description: "",
-      githubLink: "",
-      teamSize: "",
-      duration: "",
-      role: "",
-      completedDate: "",
-    },
-  ]);
+const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => {
+  const [projects, setProjects] = React.useState<Project[]>(
+    initialData && initialData.length > 0
+      ? initialData
+      : [
+          {
+            id: Date.now().toString(),
+            name: "",
+            description: "",
+            githubLink: "",
+            teamSize: "",
+            duration: "",
+            role: "",
+            completedDate: "",
+          },
+        ]
+  );
 
   const handleChange = (id: string, field: keyof Project, value: string) => {
     setProjects((prev) =>

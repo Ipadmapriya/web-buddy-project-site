@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,22 +20,27 @@ interface Internship {
 
 interface InternshipFormProps {
   onFormSubmit: (data: Internship[]) => void;
+  initialData?: Internship[];
 }
 
-const InternshipForm = ({ onFormSubmit }: InternshipFormProps) => {
+const InternshipForm = ({ onFormSubmit, initialData = [] }: InternshipFormProps) => {
   const { toast } = useToast();
-  const [internships, setInternships] = React.useState<Internship[]>([
-    {
-      id: Date.now().toString(),
-      company: "",
-      designation: "",
-      period: "",
-      teamSize: "",
-      projectsCount: "",
-      projectRole: "",
-      technologies: "",
-    },
-  ]);
+  const [internships, setInternships] = React.useState<Internship[]>(
+    initialData && initialData.length > 0 
+      ? initialData 
+      : [
+          {
+            id: Date.now().toString(),
+            company: "",
+            designation: "",
+            period: "",
+            teamSize: "",
+            projectsCount: "",
+            projectRole: "",
+            technologies: "",
+          },
+        ]
+  );
 
   const handleChange = (id: string, field: keyof Internship, value: string) => {
     setInternships((prev) =>
@@ -69,7 +73,6 @@ const InternshipForm = ({ onFormSubmit }: InternshipFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
     const hasEmptyRequiredFields = internships.some(
       internship => !internship.company || !internship.designation || !internship.period
     );

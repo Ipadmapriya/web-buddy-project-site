@@ -18,19 +18,38 @@ interface SkillsFormProps {
     interests: string[], 
     hobbies: string[] 
   }) => void;
+  initialData?: { 
+    technicalSkills: Skill[], 
+    softSkills: Skill[], 
+    interests: string[], 
+    hobbies: string[] 
+  };
 }
 
-const SkillsForm = ({ onFormSubmit }: SkillsFormProps) => {
-  const [technicalSkills, setTechnicalSkills] = React.useState<Skill[]>([
-    { id: Date.now().toString(), name: "", category: "Programming", proficiency: "Intermediate" }
-  ]);
+const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
+  const [technicalSkills, setTechnicalSkills] = React.useState<Skill[]>(
+    initialData?.technicalSkills && initialData.technicalSkills.length > 0
+      ? initialData.technicalSkills
+      : [{ id: Date.now().toString(), name: "", category: "Programming", proficiency: "Intermediate" }]
+  );
   
-  const [softSkills, setSoftSkills] = React.useState<Skill[]>([
-    { id: Date.now().toString(), name: "", category: "Soft Skill", proficiency: "Intermediate" }
-  ]);
+  const [softSkills, setSoftSkills] = React.useState<Skill[]>(
+    initialData?.softSkills && initialData.softSkills.length > 0
+      ? initialData.softSkills
+      : [{ id: Date.now().toString(), name: "", category: "Soft Skill", proficiency: "Intermediate" }]
+  );
   
-  const [interests, setInterests] = React.useState<string[]>([""]);
-  const [hobbies, setHobbies] = React.useState<string[]>([""]);
+  const [interests, setInterests] = React.useState<string[]>(
+    initialData?.interests && initialData.interests.length > 0
+      ? initialData.interests
+      : [""]
+  );
+  
+  const [hobbies, setHobbies] = React.useState<string[]>(
+    initialData?.hobbies && initialData.hobbies.length > 0
+      ? initialData.hobbies
+      : [""]
+  );
 
   const handleTechnicalChange = (id: string, field: keyof Skill, value: string) => {
     setTechnicalSkills((prev) =>

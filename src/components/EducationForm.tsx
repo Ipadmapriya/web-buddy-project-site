@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,7 +14,7 @@ interface Education {
   educationMode: string;
   duration: string;
   backlogs: string;
-  totalBacklogs: string;  // Added new field
+  totalBacklogs: string;
   passoutYear: string;
   major?: string;
   courseName?: string;
@@ -23,10 +22,11 @@ interface Education {
 
 interface EducationFormProps {
   onFormSubmit: (data: Education[]) => void;
+  initialData?: Education[];
 }
 
-const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
-  const [educations, setEducations] = React.useState<Education[]>([
+const EducationForm = ({ onFormSubmit, initialData = [] }: EducationFormProps) => {
+  const defaultEducation = [
     {
       id: "high-school",
       level: "10th Standard",
@@ -65,7 +65,11 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
       passoutYear: "",
       courseName: "",
     },
-  ]);
+  ];
+
+  const [educations, setEducations] = React.useState<Education[]>(
+    initialData && initialData.length > 0 ? initialData : defaultEducation
+  );
 
   const handleChange = (id: string, field: keyof Education, value: string) => {
     setEducations((prev) =>
@@ -85,7 +89,7 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
         educationMode: "",
         duration: "",
         backlogs: "0",
-        totalBacklogs: "0", // Ensuring totalBacklogs is included
+        totalBacklogs: "0",
         passoutYear: "",
         courseName: "",
       },
@@ -93,7 +97,6 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
   };
 
   const handleRemove = (id: string) => {
-    // Don't allow removing required education levels (10th, 12th, UG)
     if (!["high-school", "higher-secondary", "undergraduate"].includes(id)) {
       setEducations((prev) => prev.filter((edu) => edu.id !== id));
     }
@@ -228,7 +231,7 @@ const EducationForm = ({ onFormSubmit }: EducationFormProps) => {
                 )}
                 
                 {education.level === "10th Standard" && (
-                  <div className="md:col-span-2"></div> // Empty space to maintain grid layout
+                  <div className="md:col-span-2"></div>
                 )}
                 
                 <div className="space-y-2">

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,18 +16,23 @@ interface Achievement {
 
 interface AchievementsFormProps {
   onFormSubmit: (data: Achievement[]) => void;
+  initialData?: Achievement[];
 }
 
-const AchievementsForm = ({ onFormSubmit }: AchievementsFormProps) => {
-  const [achievements, setAchievements] = React.useState<Achievement[]>([
-    {
-      id: Date.now().toString(),
-      title: "",
-      organization: "",
-      date: "",
-      description: "",
-    },
-  ]);
+const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormProps) => {
+  const [achievements, setAchievements] = React.useState<Achievement[]>(
+    initialData && initialData.length > 0
+      ? initialData
+      : [
+          {
+            id: Date.now().toString(),
+            title: "",
+            organization: "",
+            date: "",
+            description: "",
+          },
+        ]
+  );
 
   const handleChange = (id: string, field: keyof Achievement, value: string) => {
     setAchievements((prev) =>
