@@ -6,12 +6,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const ContactForm = ({ onFormSubmit }: { onFormSubmit: (data: any) => void }) => {
+interface ContactFormProps {
+  onFormSubmit: (data: any) => void;
+  initialData?: {
+    name?: string;
+    phone?: string;
+    email?: string;
+    address?: string;
+  };
+}
+
+const ContactForm = ({ onFormSubmit, initialData = {} }: ContactFormProps) => {
   const [formData, setFormData] = React.useState({
-    name: "",
-    phone: "",
-    email: "",
-    address: "",
+    name: initialData.name || "",
+    phone: initialData.phone || "",
+    email: initialData.email || "",
+    address: initialData.address || "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

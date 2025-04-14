@@ -13,6 +13,7 @@ import AchievementsForm from "@/components/AchievementsForm";
 import InternshipForm from "@/components/InternshipForm";
 import PortfolioPreview from "@/components/PortfolioPreview";
 import { Check, ChevronRight } from "lucide-react";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 const steps = [
   { id: "personal", name: "Personal Information" },
@@ -48,8 +49,8 @@ const getStepsForUserType = (userType?: string) => {
 const PortfolioGenerator = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState("personal");
-  const [portfolioData, setPortfolioData] = useState({
+  const [currentStep, setCurrentStep] = useLocalStorage("portfolio_current_step", "personal");
+  const [portfolioData, setPortfolioData] = useLocalStorage("portfolio_data", {
     personal: {},
     education: [],
     internships: [],
@@ -126,6 +127,10 @@ const PortfolioGenerator = () => {
   };
 
   const handleStartOver = () => {
+    // Clear localStorage data
+    localStorage.removeItem("portfolio_data");
+    localStorage.removeItem("portfolio_current_step");
+    
     setCurrentStep("personal");
     setPortfolioData({
       personal: {},
@@ -225,15 +230,61 @@ const PortfolioGenerator = () => {
 
       {/* Current Step Form */}
       <div className="max-w-3xl mx-auto">
-        {currentStep === "personal" && <ContactForm onFormSubmit={handlePersonalInfoSubmit} />}
-        {currentStep === "education" && <EducationForm onFormSubmit={handleEducationSubmit} />}
-        {currentStep === "internships" && <InternshipForm onFormSubmit={handleInternshipsSubmit} />}
-        {currentStep === "experience" && <WorkExperienceForm onFormSubmit={handleExperienceSubmit} />}
-        {currentStep === "projects" && <ProjectsForm onFormSubmit={handleProjectsSubmit} />}
-        {currentStep === "skills" && <SkillsForm onFormSubmit={handleSkillsSubmit} />}
-        {currentStep === "achievements" && <AchievementsForm onFormSubmit={handleAchievementsSubmit} />}
+        {currentStep === "personal" && (
+          <ContactForm 
+            onFormSubmit={handlePersonalInfoSubmit} 
+            initialData={portfolioData.personal}
+          />
+        )}
         
-        {currentStep === "preview" && <PortfolioPreview portfolioData={portfolioData} onStartOver={handleStartOver} />}
+        {currentStep === "education" && (
+          <EducationForm 
+            onFormSubmit={handleEducationSubmit} 
+            initialData={portfolioData.education}
+          />
+        )}
+        
+        {currentStep === "internships" && (
+          <InternshipForm 
+            onFormSubmit={handleInternshipsSubmit} 
+            initialData={portfolioData.internships}
+          />
+        )}
+        
+        {currentStep === "experience" && (
+          <WorkExperienceForm 
+            onFormSubmit={handleExperienceSubmit} 
+            initialData={portfolioData.experience}
+          />
+        )}
+        
+        {currentStep === "projects" && (
+          <ProjectsForm 
+            onFormSubmit={handleProjectsSubmit} 
+            initialData={portfolioData.projects}
+          />
+        )}
+        
+        {currentStep === "skills" && (
+          <SkillsForm 
+            onFormSubmit={handleSkillsSubmit} 
+            initialData={portfolioData.skills}
+          />
+        )}
+        
+        {currentStep === "achievements" && (
+          <AchievementsForm 
+            onFormSubmit={handleAchievementsSubmit} 
+            initialData={portfolioData.achievements}
+          />
+        )}
+        
+        {currentStep === "preview" && (
+          <PortfolioPreview 
+            portfolioData={portfolioData} 
+            onStartOver={handleStartOver} 
+          />
+        )}
       </div>
     </div>
   );
