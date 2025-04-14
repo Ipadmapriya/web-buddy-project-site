@@ -1,4 +1,3 @@
-
 import React, { useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -46,29 +45,28 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onSt
         windowHeight: portfolioRef.current.scrollHeight
       });
       
-      const imgWidth = 210;
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgData = canvas.toDataURL('image/png');
       
-      // For better pagination and layout
-      const pageHeight = 297;
+      let heightLeft = imgHeight;
       let position = 0;
-      
+      let pageNumber = 1;
+
       // First page
       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      
-      // Additional pages if content overflows
-      let heightLeft = imgHeight - pageHeight;
-      let page = 1;
-      
-      while (heightLeft > 0) {
-        position = -pageHeight * page;
+      heightLeft -= pageHeight;
+
+      // Add new pages if content overflows
+      while (heightLeft >= 0) {
+        position = -pageHeight * pageNumber;
         pdf.addPage();
         pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
-        page++;
+        pageNumber++;
       }
       
       const fileName = `${portfolioData.personal.name || 'Portfolio'}_${new Date().toISOString().slice(0, 10)}.pdf`;

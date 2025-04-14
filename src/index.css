@@ -90,11 +90,28 @@
   padding: 20px;
   max-width: 210mm; /* A4 width */
   margin: 0 auto;
+  font-size: 14px; /* Reduced base font size */
 }
 
 .print-section {
   margin-bottom: 20px;
   break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-section h1 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.print-section h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.print-section h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
 }
 
 /* Professional styles for PDF export */
@@ -112,9 +129,26 @@
   
   .print-section {
     page-break-inside: avoid;
+    break-inside: avoid;
   }
   
   .print-container section {
     margin-bottom: 15px;
+    border: none;
+    box-shadow: none;
+  }
+
+  .print-container .card {
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    margin-bottom: 12px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-container .grid {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
+
