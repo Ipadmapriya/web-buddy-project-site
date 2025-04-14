@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -27,7 +26,7 @@ const steps = [
 ];
 
 // Modify steps based on user type
-const getStepsForUserType = (userType?: string) => {
+const getStepsForUserType = (userType: string | null | undefined) => {
   if (!userType) return steps;
 
   const userSteps = [...steps];
@@ -46,7 +45,11 @@ const getStepsForUserType = (userType?: string) => {
   return userSteps;
 };
 
-const PortfolioGenerator = () => {
+interface PortfolioGeneratorProps {
+  userType: string;
+}
+
+const PortfolioGenerator = ({ userType }: PortfolioGeneratorProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useLocalStorage("portfolio_current_step", "personal");
@@ -75,11 +78,11 @@ const PortfolioGenerator = () => {
     }
     
     // Set steps based on user type
-    if (user.userType) {
-      const userSteps = getStepsForUserType(user.userType);
+    if (userType) {
+      const userSteps = getStepsForUserType(userType);
       setActiveSteps(userSteps);
     }
-  }, [user, navigate]);
+  }, [userType, user, navigate]);
 
   const handleStepChange = (step: string) => {
     setCurrentStep(step);
@@ -99,7 +102,7 @@ const PortfolioGenerator = () => {
     setPortfolioData({ ...portfolioData, internships: data });
     
     // Skip to projects for students and freshers
-    if (user?.userType?.startsWith("student") || user?.userType?.startsWith("fresher")) {
+    if (userType?.startsWith("student") || userType?.startsWith("fresher")) {
       setCurrentStep("projects");
     } else {
       setCurrentStep("experience");
@@ -167,7 +170,7 @@ const PortfolioGenerator = () => {
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold text-center mb-2">Portfolio Generator</h1>
       <p className="text-center mb-8">
-        User Type: {user.userType ? user.userType.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' - ') : 'Standard'}
+        User Type: {userType ? userType.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' - ') : 'Standard'}
       </p>
 
       {/* Progress Steps */}

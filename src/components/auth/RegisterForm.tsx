@@ -3,17 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-
-const userTypes = [
-  { value: "fresher-ug", label: "Fresher - Undergraduate" },
-  { value: "fresher-pg", label: "Fresher - Postgraduate" },
-  { value: "experienced-ug", label: "Experienced - Undergraduate" },
-  { value: "experienced-pg", label: "Experienced - Postgraduate" },
-];
 
 export const RegisterForm = () => {
   const [name, setName] = useState("");
@@ -21,7 +13,6 @@ export const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [userType, setUserType] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -43,13 +34,12 @@ export const RegisterForm = () => {
     }
 
     try {
-      if (name && username && email && password && userType) {
+      if (name && username && email && password) {
         const userData = { 
           name, 
           username, 
           email, 
-          password, 
-          userType 
+          password
         };
         
         await register(userData);
@@ -145,22 +135,6 @@ export const RegisterForm = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="userType">User Type</Label>
-        <Select value={userType} onValueChange={setUserType} required>
-          <SelectTrigger id="userType">
-            <SelectValue placeholder="Select user type" />
-          </SelectTrigger>
-          <SelectContent>
-            {userTypes.map((type) => (
-              <SelectItem key={type.value} value={type.value}>
-                {type.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       </div>
 
       <Button type="submit" className="w-full" disabled={isLoading}>
