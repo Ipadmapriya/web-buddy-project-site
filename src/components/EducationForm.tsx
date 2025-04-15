@@ -103,6 +103,14 @@ const EducationForm = ({ onFormSubmit, initialData = [], userType }: EducationFo
     }
   };
 
+  React.useEffect(() => {
+    if (userType?.toLowerCase().includes('undergraduate')) {
+      setEducations(prev => prev.filter(edu => 
+        ["high-school", "higher-secondary", "undergraduate"].includes(edu.id))
+      );
+    }
+  }, [userType]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onFormSubmit(educations);
