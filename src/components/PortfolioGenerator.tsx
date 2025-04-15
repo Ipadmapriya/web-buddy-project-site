@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -14,6 +13,9 @@ import InternshipForm from "@/components/InternshipForm";
 import PortfolioPreview from "@/components/PortfolioPreview";
 import { Check, ChevronRight } from "lucide-react";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import CertificationsForm from "@/components/CertificationsForm";
+import LanguagesForm from "@/components/LanguagesForm";
+import FeedbackForm from "@/components/FeedbackForm";
 
 const steps = [
   { id: "personal", name: "Personal Information" },
@@ -22,8 +24,11 @@ const steps = [
   { id: "experience", name: "Work Experience" },
   { id: "projects", name: "Projects" },
   { id: "skills", name: "Skills" },
+  { id: "certifications", name: "Certifications" },
+  { id: "languages", name: "Languages" },
   { id: "achievements", name: "Achievements" },
   { id: "preview", name: "Preview" },
+  { id: "feedback", name: "Feedback" },
 ];
 
 // Modify steps based on user type
@@ -68,6 +73,8 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
       hobbies: []
     },
     achievements: [],
+    certifications: [],
+    languages: [],
   });
   
   const [activeSteps, setActiveSteps] = useState(steps);
@@ -123,12 +130,27 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
   
   const handleSkillsSubmit = (data: any) => {
     setPortfolioData({ ...portfolioData, skills: data });
+    setCurrentStep("certifications");
+  };
+
+  const handleCertificationsSubmit = (data: any) => {
+    setPortfolioData({ ...portfolioData, certifications: data });
+    setCurrentStep("languages");
+  };
+
+  const handleLanguagesSubmit = (data: any) => {
+    setPortfolioData({ ...portfolioData, languages: data });
     setCurrentStep("achievements");
   };
   
   const handleAchievementsSubmit = (data: any) => {
     setPortfolioData({ ...portfolioData, achievements: data });
     setCurrentStep("preview");
+  };
+
+  const handleFeedbackSubmit = () => {
+    // After feedback is submitted, we can show a success message or redirect
+    navigate("/");
   };
 
   const handleStartOver = () => {
@@ -150,6 +172,8 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
         hobbies: []
       },
       achievements: [],
+      certifications: [],
+      languages: [],
     });
   };
 
@@ -285,6 +309,20 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
           />
         )}
         
+        {currentStep === "certifications" && (
+          <CertificationsForm
+            onFormSubmit={handleCertificationsSubmit}
+            initialData={portfolioData.certifications}
+          />
+        )}
+
+        {currentStep === "languages" && (
+          <LanguagesForm
+            onFormSubmit={handleLanguagesSubmit}
+            initialData={portfolioData.languages}
+          />
+        )}
+        
         {currentStep === "achievements" && (
           <AchievementsForm 
             onFormSubmit={handleAchievementsSubmit} 
@@ -297,6 +335,10 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
             portfolioData={portfolioData} 
             onStartOver={handleStartOver} 
           />
+        )}
+
+        {currentStep === "feedback" && (
+          <FeedbackForm onSubmit={handleFeedbackSubmit} />
         )}
       </div>
     </div>

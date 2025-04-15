@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, ArrowLeft, ExternalLink, Mail, Phone, MapPin, Calendar, Building, GraduationCap, Code, Award, Briefcase } from "lucide-react";
+import { Download, ArrowLeft, ExternalLink, Mail, Phone, MapPin, Calendar, Building, GraduationCap, Code, Award, Briefcase, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -21,11 +21,18 @@ interface PortfolioPreviewProps {
       hobbies: string[];
     };
     achievements: any[];
+    certifications?: any[];
+    languages?: any[];
   };
   onStartOver: () => void;
+  onSubmitFeedback: () => void;
 }
 
-const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onStartOver }) => {
+const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({
+  portfolioData,
+  onStartOver,
+  onSubmitFeedback,
+}) => {
   const { toast } = useToast();
   const portfolioRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -92,6 +99,23 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onSt
     navigate("/");
   };
 
+  const handleShare = async () => {
+    try {
+      await navigator.share({
+        title: "My Portfolio",
+        text: "Check out my professional portfolio",
+        url: window.location.href,
+      });
+    } catch (error) {
+      // Fallback to copying to clipboard if Web Share API is not supported
+      navigator.clipboard.writeText(window.location.href);
+      toast({
+        title: "Link copied!",
+        description: "Portfolio link has been copied to your clipboard.",
+      });
+    }
+  };
+
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center mb-6">
@@ -103,9 +127,14 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onSt
             <ArrowLeft className="mr-2 h-4 w-4" /> Back to User Types
           </Button>
         </div>
-        <Button onClick={handleDownload}>
-          <Download className="mr-2 h-4 w-4" /> Download Portfolio
-        </Button>
+        <div className="space-x-2">
+          <Button variant="outline" onClick={handleShare}>
+            <Share2 className="mr-2 h-4 w-4" /> Share Portfolio
+          </Button>
+          <Button onClick={handleDownload}>
+            <Download className="mr-2 h-4 w-4" /> Download Portfolio
+          </Button>
+        </div>
       </div>
 
       <div ref={portfolioRef} className="print-container">
@@ -404,6 +433,71 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onSt
             </div>
           </section>
         )}
+
+        {/* Certifications section */}
+        {portfolioData.certifications?.length > 0 && (
+          <section className="mb-8 print-section">
+            <h2 className="text-2xl font-bold mb-4">Certifications</h2>
+            <div className="space-y-4">
+              {portfolioData.certifications.map((cert, index) => (
+                <Card key={index} className="border-gray-200 shadow-sm overflow-hidden">
+                  <CardContent className="pt-6">
+                    <h3 className="text-xl font-semibold">{cert.course_name}</h3>
+                    <p className="font-medium">{cert.issuing_institution}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                      <div><span className="font-medium">Issue Date:</span> {cert.issue_date}</div>
+                      <div><span className="font-medium">Completion Date:</span> {cert.completion_date}</div>
+                      <div><span className="font-medium">Duration:</span> {cert.duration}</div>
+                      {cert.student_id && (
+                        <div><span className="font-medium">Student ID:</span> {cert.student_id}</div>
+                      )}
+                    </div>
+                    {cert.credential_link && (
+                      <a
+                        href={cert.credential_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline mt-2 inline-block"
+                      >
+                        View Credential <ExternalLink className="h-4 w-4 inline" />
+                      </a>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Languages section */}
+        {portfolioData.languages?.length > 0 && (
+          <section className="mb-8 print-section">
+            <h2 className="text-2xl font-bold mb-4">Languages</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {portfolioData.languages.map((lang, index) => (
+                <Card key={index} className="border-gray-200 shadow-sm overflow-hidden">
+                  <CardContent className="pt-6">
+                    <h3 className="text-xl font-semibold mb-2">{lang.language_name}</h3>
+                    <div className="space-y-1">
+                      <p><span className="font-medium">Reading:</span> {lang.reading_proficiency}</p>
+                      <p><span className="font-medium">Writing:</span> {lang.writing_proficiency}</p>
+                      <p><span className="font-medium">Speaking:</span> {lang.speaking_proficiency}</p>
+                      {lang.is_native && (
+                        <p className="text-green-600 font-medium">Native Language</p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <div className="flex justify-center">
+        <Button onClick={onSubmitFeedback} variant="secondary" size="lg">
+          Submit Feedback
+        </Button>
       </div>
     </div>
   );
