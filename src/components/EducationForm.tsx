@@ -23,9 +23,10 @@ interface Education {
 interface EducationFormProps {
   onFormSubmit: (data: Education[]) => void;
   initialData?: Education[];
+  userType?: string;
 }
 
-const EducationForm = ({ onFormSubmit, initialData = [] }: EducationFormProps) => {
+const EducationForm = ({ onFormSubmit, initialData = [], userType }: EducationFormProps) => {
   const defaultEducation = [
     {
       id: "high-school",
@@ -248,9 +249,12 @@ const EducationForm = ({ onFormSubmit, initialData = [] }: EducationFormProps) =
             </div>
           ))}
 
-          <Button type="button" variant="outline" onClick={handleAddMore} className="w-full">
-            <Plus className="h-4 w-4 mr-2" /> Add Postgraduate Education
-          </Button>
+          {/* Only show Add Postgraduate button if user is not undergraduate */}
+          {!userType?.toLowerCase().includes('undergraduate') && (
+            <Button type="button" variant="outline" onClick={handleAddMore} className="w-full">
+              <Plus className="h-4 w-4 mr-2" /> Add Postgraduate Education
+            </Button>
+          )}
           <Button type="submit" className="w-full">Save & Continue</Button>
         </form>
       </CardContent>

@@ -266,6 +266,7 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
           <EducationForm 
             onFormSubmit={handleEducationSubmit} 
             initialData={portfolioData.education}
+            userType={userType}
           />
         )}
         
