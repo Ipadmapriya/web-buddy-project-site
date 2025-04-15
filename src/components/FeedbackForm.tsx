@@ -29,14 +29,17 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
     }
 
     try {
-      // Using a type-safe approach for inserting data
+      // Because we're working with a local database without type definitions,
+      // we need to use a more generic approach for inserting data
       const { error } = await supabase
-        .from("user_feedback")
+        .from('user_feedback')
         .insert({
           rating,
           suggestion,
-          user_id: user?.id
-        });
+          // The mock auth context doesn't use UUIDs, so we'll just store the email
+          // In a real Supabase setup, this would be the UUID
+          user_id: user?.email
+        } as any);
 
       if (error) throw error;
 
