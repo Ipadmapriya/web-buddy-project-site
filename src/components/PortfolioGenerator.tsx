@@ -31,23 +31,19 @@ const steps = [
   { id: "feedback", name: "Feedback" },
 ];
 
-// Modify steps based on user type
 const getStepsForUserType = (userType: string | null | undefined) => {
   if (!userType) return steps;
 
   const userSteps = [...steps];
   
-  // Students don't need work experience
   if (userType.startsWith("student")) {
     return userSteps.filter(step => step.id !== "experience");
   }
   
-  // Freshers don't need work experience
   if (userType.startsWith("fresher")) {
     return userSteps.filter(step => step.id !== "experience");
   }
   
-  // Experienced users have all steps
   return userSteps;
 };
 
@@ -80,13 +76,11 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
   const [activeSteps, setActiveSteps] = useState(steps);
 
   useEffect(() => {
-    // Redirect to login if not authenticated
     if (!user) {
       navigate("/auth");
       return;
     }
     
-    // Set steps based on user type
     if (userType) {
       const userSteps = getStepsForUserType(userType);
       setActiveSteps(userSteps);
@@ -110,7 +104,6 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
   const handleInternshipsSubmit = (data: any) => {
     setPortfolioData({ ...portfolioData, internships: data });
     
-    // Skip to projects for students and freshers
     if (userType?.startsWith("student") || userType?.startsWith("fresher")) {
       setCurrentStep("projects");
     } else {
@@ -149,12 +142,10 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
   };
 
   const handleFeedbackSubmit = () => {
-    // After feedback is submitted, we can show a success message or redirect
     navigate("/");
   };
 
   const handleStartOver = () => {
-    // Clear localStorage data
     localStorage.removeItem("portfolio_data");
     localStorage.removeItem("portfolio_current_step");
     
@@ -207,7 +198,6 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
         User Type: {userType ? userType.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' - ') : 'Standard'}
       </p>
 
-      {/* Progress Steps */}
       <div className="mb-8">
         <div className="hidden sm:flex items-center justify-between mb-4">
           {activeSteps.map((step, index) => (
@@ -249,7 +239,6 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
           ))}
         </div>
 
-        {/* Mobile Progress */}
         <div className="sm:hidden mb-4">
           <p className="text-center font-medium">
             Step {getCurrentStepIndex() + 1} of {activeSteps.length}: {activeSteps[getCurrentStepIndex()].name}
@@ -265,7 +254,6 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
         </div>
       </div>
 
-      {/* Current Step Form */}
       <div className="max-w-3xl mx-auto">
         {currentStep === "personal" && (
           <ContactForm 
@@ -334,6 +322,7 @@ const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorPro
           <PortfolioPreview 
             portfolioData={portfolioData} 
             onStartOver={handleStartOver} 
+            onSubmitFeedback={() => setCurrentStep("feedback")}
           />
         )}
 

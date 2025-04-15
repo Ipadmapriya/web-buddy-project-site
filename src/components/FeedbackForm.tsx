@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface FeedbackFormProps {
   onSubmit: () => void;
@@ -15,6 +16,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
   const [hoveredRating, setHoveredRating] = useState<number>(0);
   const [suggestion, setSuggestion] = useState("");
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleSubmit = async () => {
     if (rating === 0) {
@@ -27,12 +29,14 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
     }
 
     try {
-      const { error } = await supabase.from("user_feedback").insert([
-        {
+      // Using a type-safe approach for inserting data
+      const { error } = await supabase
+        .from("user_feedback")
+        .insert({
           rating,
           suggestion,
-        },
-      ]);
+          user_id: user?.id
+        });
 
       if (error) throw error;
 
@@ -43,6 +47,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
 
       onSubmit();
     } catch (error) {
+      console.error("Error submitting feedback:", error);
       toast({
         title: "Error",
         description: "Failed to submit feedback. Please try again.",
