@@ -29,6 +29,10 @@ export default function Index() {
     return null;
   }
 
+  const handleResetUserType = () => {
+    setSelectedType(null);
+  };
+
   if (!selectedType) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -55,5 +59,5 @@ export default function Index() {
     );
   }
 
-  return <PortfolioGenerator userType={selectedType} />;
+  return <PortfolioGenerator userType={selectedType} onResetUserType={handleResetUserType} />;
 }

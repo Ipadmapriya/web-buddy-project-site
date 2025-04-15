@@ -5,6 +5,7 @@ import { Download, ArrowLeft, ExternalLink, Mail, Phone, MapPin, Calendar, Build
 import { useToast } from "@/hooks/use-toast";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { useNavigate } from "react-router-dom";
 
 interface PortfolioPreviewProps {
   portfolioData: {
@@ -27,6 +28,7 @@ interface PortfolioPreviewProps {
 const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onStartOver }) => {
   const { toast } = useToast();
   const portfolioRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   
   const handleDownload = async () => {
     if (!portfolioRef.current) return;
@@ -86,12 +88,21 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onSt
     }
   };
 
+  const handleBackToHome = () => {
+    navigate("/");
+  };
+
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center mb-6">
-        <Button variant="outline" onClick={onStartOver}>
-          <ArrowLeft className="mr-2 h-4 w-4" /> Start Over
-        </Button>
+        <div className="space-x-2">
+          <Button variant="outline" onClick={onStartOver}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Start Over
+          </Button>
+          <Button variant="secondary" onClick={handleBackToHome}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to User Types
+          </Button>
+        </div>
         <Button onClick={handleDownload}>
           <Download className="mr-2 h-4 w-4" /> Download Portfolio
         </Button>
@@ -155,12 +166,12 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onSt
                         <div><span className="font-medium">Course:</span> {edu.courseName}</div>
                       )}
                       
-                      {/* Backlogs information */}
-                      {edu.backlogs && parseInt(edu.backlogs) > 0 && (
-                        <div><span className="font-medium">Active Backlogs:</span> {edu.backlogs}</div>
-                      )}
-                      {edu.totalBacklogs && parseInt(edu.totalBacklogs) > 0 && (
-                        <div><span className="font-medium">Total Backlogs:</span> {edu.totalBacklogs}</div>
+                      {/* Display backlogs for Undergraduate and Postgraduate */}
+                      {(edu.level === "Undergraduate" || edu.level === "Postgraduate") && (
+                        <>
+                          <div><span className="font-medium">Active Backlogs:</span> {edu.backlogs}</div>
+                          <div><span className="font-medium">Total Backlogs:</span> {edu.totalBacklogs}</div>
+                        </>
                       )}
                     </div>
                   </CardContent>
@@ -216,7 +227,7 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({ portfolioData, onSt
           </section>
         )}
 
-        {/* Work Experience section - Updated with all fields */}
+        {/* Work Experience section */}
         {portfolioData.experience.length > 0 && (
           <section className="mb-8 print-section">
             <div className="flex items-center mb-4">

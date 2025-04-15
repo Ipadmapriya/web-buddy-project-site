@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -47,9 +48,10 @@ const getStepsForUserType = (userType: string | null | undefined) => {
 
 interface PortfolioGeneratorProps {
   userType: string;
+  onResetUserType: () => void;
 }
 
-const PortfolioGenerator = ({ userType }: PortfolioGeneratorProps) => {
+const PortfolioGenerator = ({ userType, onResetUserType }: PortfolioGeneratorProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useLocalStorage("portfolio_current_step", "personal");
@@ -168,8 +170,16 @@ const PortfolioGenerator = ({ userType }: PortfolioGeneratorProps) => {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold text-center mb-2">Portfolio Generator</h1>
-      <p className="text-center mb-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Portfolio Generator</h1>
+        {currentStep !== "preview" && (
+          <Button variant="outline" onClick={onResetUserType}>
+            Change User Type
+          </Button>
+        )}
+      </div>
+      
+      <p className="mb-8">
         User Type: {userType ? userType.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' - ') : 'Standard'}
       </p>
 
