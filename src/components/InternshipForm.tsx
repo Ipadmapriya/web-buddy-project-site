@@ -16,6 +16,7 @@ interface Internship {
   projectsCount: string;
   projectRole: string;
   technologies: string;
+  certificateLink: string;
 }
 
 interface InternshipFormProps {
@@ -38,6 +39,7 @@ const InternshipForm = ({ onFormSubmit, initialData = [] }: InternshipFormProps)
             projectsCount: "",
             projectRole: "",
             technologies: "",
+            certificateLink: "",
           },
         ]
   );
@@ -60,6 +62,7 @@ const InternshipForm = ({ onFormSubmit, initialData = [] }: InternshipFormProps)
         projectsCount: "",
         projectRole: "",
         technologies: "",
+        certificateLink: "",
       },
     ]);
   };
@@ -180,6 +183,16 @@ const InternshipForm = ({ onFormSubmit, initialData = [] }: InternshipFormProps)
                   onChange={(e) => handleChange(internship.id, "technologies", e.target.value)}
                   placeholder="React, Node.js, Python, AWS, etc."
                   rows={2}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor={`certificate-${internship.id}`}>Certificate Link</Label>
+                <Input
+                  id={`certificate-${internship.id}`}
+                  value={internship.certificateLink}
+                  onChange={(e) => handleChange(internship.id, "certificateLink", e.target.value)}
+                  placeholder="https://example.com/certificate"
+                  type="url"
                 />
               </div>
             </div>

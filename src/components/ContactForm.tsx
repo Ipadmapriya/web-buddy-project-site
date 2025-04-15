@@ -13,6 +13,8 @@ interface ContactFormProps {
     phone?: string;
     email?: string;
     address?: string;
+    linkedinUrl?: string;
+    githubUrl?: string;
   };
 }
 
@@ -22,6 +24,8 @@ const ContactForm = ({ onFormSubmit, initialData = {} }: ContactFormProps) => {
     phone: initialData.phone || "",
     email: initialData.email || "",
     address: initialData.address || "",
+    linkedinUrl: initialData.linkedinUrl || "",
+    githubUrl: initialData.githubUrl || "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -74,6 +78,28 @@ const ContactForm = ({ onFormSubmit, initialData = {} }: ContactFormProps) => {
                 placeholder="john.doe@example.com"
                 type="email"
                 required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="linkedinUrl">LinkedIn Profile URL</Label>
+              <Input
+                id="linkedinUrl"
+                name="linkedinUrl"
+                value={formData.linkedinUrl}
+                onChange={handleChange}
+                placeholder="https://linkedin.com/in/username"
+                type="url"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="githubUrl">GitHub Profile URL</Label>
+              <Input
+                id="githubUrl"
+                name="githubUrl"
+                value={formData.githubUrl}
+                onChange={handleChange}
+                placeholder="https://github.com/username"
+                type="url"
               />
             </div>
           </div>

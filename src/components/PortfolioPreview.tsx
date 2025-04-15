@@ -138,7 +138,7 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({
       </div>
 
       <div ref={portfolioRef} className="print-container">
-        {/* Professional header section */}
+        {/* Professional header section with social links */}
         <section className="bg-primary text-primary-foreground p-8 rounded-lg mb-8 border border-gray-200 shadow-sm">
           <h1 className="text-3xl font-bold">{portfolioData.personal.name || "Your Name"}</h1>
           <div className="mt-4 flex flex-wrap gap-4">
@@ -159,6 +159,30 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({
                 <MapPin className="h-4 w-4 mr-2" />
                 <span>{portfolioData.personal.address}</span>
               </div>
+            )}
+          </div>
+          <div className="mt-4 flex flex-wrap gap-4">
+            {portfolioData.personal.linkedinUrl && (
+              <a
+                href={portfolioData.personal.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-primary-foreground hover:underline"
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                LinkedIn Profile
+              </a>
+            )}
+            {portfolioData.personal.githubUrl && (
+              <a
+                href={portfolioData.personal.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-primary-foreground hover:underline"
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                GitHub Profile
+              </a>
             )}
           </div>
         </section>
@@ -210,7 +234,7 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({
           </section>
         )}
 
-        {/* Internship section - New section */}
+        {/* Internship section with certificate links */}
         {portfolioData.internships && portfolioData.internships.length > 0 && (
           <section className="mb-8 print-section">
             <div className="flex items-center mb-4">
@@ -247,6 +271,20 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({
                       <div className="mt-2">
                         <span className="font-medium">Technologies:</span>
                         <p className="mt-1">{internship.technologies}</p>
+                      </div>
+                    )}
+                    
+                    {internship.certificateLink && (
+                      <div className="mt-2">
+                        <a
+                          href={internship.certificateLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-blue-500 hover:underline"
+                        >
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          View Certificate
+                        </a>
                       </div>
                     )}
                   </CardContent>
