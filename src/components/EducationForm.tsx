@@ -116,6 +116,8 @@ const EducationForm = ({ onFormSubmit, initialData = [], userType }: EducationFo
     onFormSubmit(educations);
   };
 
+  const isUndergraduate = userType?.toLowerCase().includes('undergraduate');
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -257,8 +259,7 @@ const EducationForm = ({ onFormSubmit, initialData = [], userType }: EducationFo
             </div>
           ))}
 
-          {/* Only show Add Postgraduate button if user is not undergraduate */}
-          {!userType?.toLowerCase().includes('undergraduate') && (
+          {!isUndergraduate && (
             <Button type="button" variant="outline" onClick={handleAddMore} className="w-full">
               <Plus className="h-4 w-4 mr-2" /> Add Postgraduate Education
             </Button>
