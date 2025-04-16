@@ -3,7 +3,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { LogIn, LogOut, User } from "lucide-react";
+import { LogIn, LogOut, User, Shield } from "lucide-react";
 
 const Navigation = () => {
   const { user, logout } = useAuth();
@@ -40,6 +40,14 @@ const Navigation = () => {
                   )}
                 </div>
               </div>
+              
+              {user.isAdmin && (
+                <Button variant="outline" size="sm" onClick={() => navigate("/admin")}>
+                  <Shield className="h-4 w-4 mr-2" />
+                  Admin
+                </Button>
+              )}
+              
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout

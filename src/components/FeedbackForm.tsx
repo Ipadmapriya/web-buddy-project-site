@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Star } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { v4 as uuidv4 } from "@/lib/uuid"; // We'll create this simple utility
 
 interface FeedbackFormProps {
   onSubmit: () => void;
@@ -29,19 +29,23 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
     }
 
     try {
-      // Because we're working with a local database without type definitions,
-      // we need to cast the entire operation to 'any' to avoid TypeScript errors
-      const { error } = await (supabase as any)
-        .from('user_feedback')
-        .insert({
-          rating,
-          suggestion,
-          // The mock auth context doesn't use UUIDs, so we'll just store the email
-          // In a real Supabase setup, this would be the UUID
-          user_id: user?.email
-        });
-
-      if (error) throw error;
+      // Get existing feedback data or initialize an empty array
+      const existingFeedback = JSON.parse(localStorage.getItem("feedback") || "[]");
+      
+      // Create new feedback entry
+      const newFeedback = {
+        id: uuidv4(),
+        user_id: user?.email,
+        rating,
+        suggestion,
+        created_at: new Date().toISOString()
+      };
+      
+      // Add to existing feedback
+      existingFeedback.push(newFeedback);
+      
+      // Save to localStorage
+      localStorage.setItem("feedback", JSON.stringify(existingFeedback));
 
       toast({
         title: "Thank you for your feedback!",

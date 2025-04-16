@@ -1,11 +1,13 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 type UserType = {
   name?: string;
   username?: string;
   email: string;
   userType?: string;
+  isAdmin?: boolean;
 } | null;
 
 interface AuthContextType {
@@ -69,6 +71,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Create user object including password for authentication
       const newUser = { 
         ...userData,
+        // Set default isAdmin value to false
+        isAdmin: userData.email === "admin@example.com" ? true : false,
         // Ensure password is explicitly included
         password: userData.password 
       };
