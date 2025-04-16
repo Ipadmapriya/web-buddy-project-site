@@ -28,16 +28,21 @@ export const LoginForm = () => {
           title: "Error",
           description: "Please fill in all fields",
         });
+        setIsLoading(false);
         return;
       }
       
+      console.log("Attempting login with:", email, password);
       await login(email, password);
+      
       toast({
         title: "Success",
         description: "Logged in successfully",
       });
-      navigate("/");
+      
+      // Let the redirect happen from the Auth component
     } catch (error: any) {
+      console.error("Login failed:", error);
       toast({
         variant: "destructive",
         title: "Failed to log in",

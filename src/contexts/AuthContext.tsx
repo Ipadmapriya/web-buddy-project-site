@@ -31,6 +31,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(JSON.parse(storedUser));
     }
     setIsLoading(false);
+    
+    // Initialize admin user if it doesn't exist yet
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    if (!users.some((u: any) => u.email === "admin@example.com")) {
+      const adminUser = {
+        email: "admin@example.com",
+        password: "admin123",
+        isAdmin: true
+      };
+      users.push(adminUser);
+      localStorage.setItem("users", JSON.stringify(users));
+    }
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -38,14 +50,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       // Mock login - Check if user exists in localStorage
       const users = JSON.parse(localStorage.getItem("users") || "[]");
+      
+      console.log("Users in storage:", users);
+      console.log("Attempting login with:", email, password);
+      
       const user = users.find((u: any) => u.email === email);
       
-      if (!user || user.password !== password) {
+      if (!user) {
+        console.error("User not found:", email);
+        throw new Error("Invalid credentials");
+      }
+      
+      if (user.password !== password) {
+        console.error("Password mismatch for user:", email);
         throw new Error("Invalid credentials");
       }
       
       // Create a user object without the password
       const { password: _, ...safeUser } = user;
+      
+      console.log("Login successful, user:", safeUser);
       
       setUser(safeUser);
       localStorage.setItem("user", JSON.stringify(safeUser));
