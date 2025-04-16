@@ -22,10 +22,21 @@ export default function Index() {
   useEffect(() => {
     if (!user) {
       navigate("/auth");
+      return;
+    }
+
+    // Redirect admin users directly to the admin dashboard
+    if (user.isAdmin) {
+      navigate("/admin");
     }
   }, [user, navigate]);
 
   if (!user) {
+    return null;
+  }
+
+  // Don't show anything for admin users (they'll be redirected)
+  if (user.isAdmin) {
     return null;
   }
 
