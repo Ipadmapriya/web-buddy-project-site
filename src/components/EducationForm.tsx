@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -105,6 +106,7 @@ const EducationForm = ({ onFormSubmit, initialData = [], userType }: EducationFo
 
   React.useEffect(() => {
     if (userType?.toLowerCase().includes('undergraduate')) {
+      // Remove any postgraduate entries for undergraduate users
       setEducations(prev => prev.filter(edu => 
         ["high-school", "higher-secondary", "undergraduate"].includes(edu.id))
       );
@@ -259,6 +261,7 @@ const EducationForm = ({ onFormSubmit, initialData = [], userType }: EducationFo
             </div>
           ))}
 
+          {/* Completely remove the Add Postgraduate button for undergraduate users */}
           {!isUndergraduate && (
             <Button type="button" variant="outline" onClick={handleAddMore} className="w-full">
               <Plus className="h-4 w-4 mr-2" /> Add Postgraduate Education
