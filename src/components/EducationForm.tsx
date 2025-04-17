@@ -105,7 +105,7 @@ const EducationForm = ({ onFormSubmit, initialData = [], userType }: EducationFo
   };
 
   React.useEffect(() => {
-    if (userType?.toLowerCase().includes('undergraduate')) {
+    if (userType?.includes('-ug')) {
       // Remove any postgraduate entries for undergraduate users
       setEducations(prev => prev.filter(edu => 
         ["high-school", "higher-secondary", "undergraduate"].includes(edu.id))
@@ -118,7 +118,8 @@ const EducationForm = ({ onFormSubmit, initialData = [], userType }: EducationFo
     onFormSubmit(educations);
   };
 
-  const isUndergraduate = userType?.toLowerCase().includes('undergraduate');
+  // Check if the user type is any kind of undergraduate (fresher-ug or experienced-ug)
+  const isUndergraduate = userType?.includes('-ug');
 
   return (
     <Card className="w-full">
