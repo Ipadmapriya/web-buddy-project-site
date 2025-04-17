@@ -82,6 +82,39 @@
   }
 }
 
+/* Education Card Gradient Styles */
+.education-card-primary {
+  background: linear-gradient(to right, #e0f2fe, #f8fafc);
+  border-left: 4px solid #3b82f6;
+}
+
+.education-card-secondary {
+  background: linear-gradient(to right, #dbeafe, #f8fafc);
+  border-left: 4px solid #6366f1;
+}
+
+.education-card-tertiary {
+  background: linear-gradient(to right, #e0e7ff, #f8fafc);
+  border-left: 4px solid #8b5cf6;
+}
+
+.education-card-quaternary {
+  background: linear-gradient(to right, #ede9fe, #f8fafc);
+  border-left: 4px solid #a855f7;
+}
+
+/* Form Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Input hover styles */
+input:hover, textarea:hover {
+  @apply border-blue-300;
+  transition: border-color 0.3s ease;
+}
+
 /* PDF Export Styling */
 .print-container {
   background-color: white;
@@ -112,6 +145,34 @@
 .print-section h3 {
   font-size: 16px;
   margin-bottom: 8px;
+}
+
+/* Portfolio Preview Styles */
+.portfolio-header {
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.portfolio-section-header {
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.portfolio-card {
+  border-radius: 0.5rem;
+  background: linear-gradient(to bottom, #ffffff, #f9fafb);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Professional styles for PDF export */
@@ -151,4 +212,3 @@
     page-break-inside: avoid;
   }
 }
-
