@@ -18,6 +18,7 @@ export default function Index() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [adminView, setAdminView] = useState<boolean>(false);
 
   useEffect(() => {
     if (!user) {
@@ -25,9 +26,16 @@ export default function Index() {
       return;
     }
 
-    // Redirect admin users directly to the admin dashboard
-    if (user.isAdmin) {
+    // Check if admin is coming from admin dashboard
+    const adminReturning = localStorage.getItem("adminReturning");
+    
+    // If admin user but not explicitly coming from dashboard, redirect to admin page
+    if (user.isAdmin && !adminReturning) {
       navigate("/admin");
+    } else if (adminReturning) {
+      // Admin is viewing the portfolio generator
+      setAdminView(true);
+      localStorage.removeItem("adminReturning");
     }
   }, [user, navigate]);
 
@@ -35,18 +43,33 @@ export default function Index() {
     return null;
   }
 
-  // Don't show anything for admin users (they'll be redirected)
-  if (user.isAdmin) {
-    return null;
-  }
-
   const handleResetUserType = () => {
     setSelectedType(null);
   };
 
+  const handleReturnToAdmin = () => {
+    navigate("/admin");
+  };
+
   if (!selectedType) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="min-h-screen bg-background flex flex-col items-center p-4">
+        {adminView && (
+          <div className="w-full max-w-2xl mb-4">
+            <Button 
+              variant="outline" 
+              onClick={handleReturnToAdmin} 
+              className="mb-6"
+            >
+              Return to Admin Dashboard
+            </Button>
+            <div className="bg-muted p-4 rounded-md mb-6">
+              <h2 className="text-lg font-semibold mb-2">Admin View Mode</h2>
+              <p>You are currently viewing the Portfolio Generator as an admin. Select a user type below to see what users experience.</p>
+            </div>
+          </div>
+        )}
+        
         <Card className="w-full max-w-2xl p-6">
           <h1 className="text-2xl font-bold text-center mb-6">Choose Your Portfolio Type</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -70,5 +93,24 @@ export default function Index() {
     );
   }
 
-  return <PortfolioGenerator userType={selectedType} onResetUserType={handleResetUserType} />;
+  return (
+    <div>
+      {adminView && (
+        <div className="container mx-auto pt-4">
+          <Button 
+            variant="outline" 
+            onClick={handleReturnToAdmin}
+            className="mb-4"
+          >
+            Return to Admin Dashboard
+          </Button>
+          <div className="bg-muted p-4 rounded-md mb-4">
+            <h2 className="text-lg font-semibold mb-2">Admin View Mode</h2>
+            <p>You are currently viewing the Portfolio Generator as an admin user.</p>
+          </div>
+        </div>
+      )}
+      <PortfolioGenerator userType={selectedType} onResetUserType={handleResetUserType} />
+    </div>
+  );
 }

@@ -36,6 +36,18 @@ export default function AdminDashboard() {
   const adminCount = allUsers.filter((u: any) => u.isAdmin).length;
   const regularUserCount = allUsers.filter((u: any) => !u.isAdmin).length;
 
+  // Handle navigation to portfolio generator
+  const handleViewPortfolioGenerator = () => {
+    // We need to temporarily set the user as non-admin to view the portfolio generator
+    const currentUser = { ...user };
+    
+    // Store admin status to restore later
+    localStorage.setItem("adminReturning", "true");
+    
+    // Navigate to the main page
+    navigate("/");
+  };
+
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
@@ -44,7 +56,7 @@ export default function AdminDashboard() {
           <p className="text-muted-foreground">Manage users and view feedback</p>
         </div>
         <div className="mt-4 md:mt-0">
-          <Button variant="outline" onClick={() => navigate("/")}>
+          <Button variant="outline" onClick={handleViewPortfolioGenerator}>
             View Portfolio Generator
           </Button>
         </div>
