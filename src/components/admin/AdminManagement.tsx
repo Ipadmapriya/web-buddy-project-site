@@ -24,6 +24,7 @@ import { Search, Trash2, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
+import UserManagement from "@/components/admin/UserManagement";
 
 const AdminManagement = () => {
   // Reuse the UserManagement component with showAdmins=true
