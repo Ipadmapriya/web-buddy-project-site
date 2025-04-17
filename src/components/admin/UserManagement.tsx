@@ -22,7 +22,11 @@ type User = {
   isAdmin: boolean;
 };
 
-const UserManagement = () => {
+interface UserManagementProps {
+  showAdmins?: boolean;
+}
+
+const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
@@ -31,12 +35,14 @@ const UserManagement = () => {
   useEffect(() => {
     // Load users from localStorage
     const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
-    const safeUsers = storedUsers.map((user: any) => {
-      const { password, ...safeUser } = user;
-      return safeUser;
-    });
+    const safeUsers = storedUsers
+      .filter((user: any) => showAdmins ? user.isAdmin : !user.isAdmin) // Filter based on showAdmins prop
+      .map((user: any) => {
+        const { password, ...safeUser } = user;
+        return safeUser;
+      });
     setUsers(safeUsers);
-  }, []);
+  }, [showAdmins]);
 
   useEffect(() => {
     // Filter users based on search term
@@ -72,7 +78,7 @@ const UserManagement = () => {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search users..."
+            placeholder={`Search ${showAdmins ? 'admin' : 'regular'} users...`}
             className="pl-8"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -87,7 +93,7 @@ const UserManagement = () => {
               <TableHead>Email</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Username</TableHead>
-              <TableHead>User Type</TableHead>
+              {!showAdmins && <TableHead>User Type</TableHead>}
               <TableHead>Role</TableHead>
               <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
@@ -99,12 +105,16 @@ const UserManagement = () => {
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.name || "-"}</TableCell>
                   <TableCell>{user.username || "-"}</TableCell>
-                  <TableCell>{user.userType || "-"}</TableCell>
+                  {!showAdmins && <TableCell>{user.userType || "-"}</TableCell>}
                   <TableCell>{user.isAdmin ? "Admin" : "User"}</TableCell>
                   <TableCell>
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon" disabled={user.isAdmin}>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          disabled={user.email === "admin@example.com"}
+                        >
                           <Trash2 className="h-4 w-4 text-destructive" />
                         </Button>
                       </AlertDialogTrigger>
@@ -132,8 +142,8 @@ const UserManagement = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
-                  No users found.
+                <TableCell colSpan={showAdmins ? 5 : 6} className="h-24 text-center">
+                  No {showAdmins ? 'admin' : 'regular'} users found.
                 </TableCell>
               </TableRow>
             )}

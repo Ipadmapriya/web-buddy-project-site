@@ -1,18 +1,19 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PieChart } from "recharts";
-import { PieChart as PieChartIcon, Users, MessageSquare } from "lucide-react";
+import { PieChart as PieChartIcon, Users, MessageSquare, ShieldCheck } from "lucide-react";
 import UserManagement from "@/components/admin/UserManagement";
 import FeedbackReviews from "@/components/admin/FeedbackReviews";
+import AdminManagement from "@/components/admin/AdminManagement";
 
 export default function AdminDashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("users");
 
   React.useEffect(() => {
     // Redirect non-admin users
@@ -30,6 +31,11 @@ export default function AdminDashboard() {
     return null;
   }
 
+  // Calculate user counts
+  const allUsers = JSON.parse(localStorage.getItem("users") || "[]");
+  const adminCount = allUsers.filter((u: any) => u.isAdmin).length;
+  const regularUserCount = allUsers.filter((u: any) => !u.isAdmin).length;
+
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
@@ -44,16 +50,30 @@ export default function AdminDashboard() {
         </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Regular Users</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">
               <Users className="h-5 w-5 text-muted-foreground mr-2" />
               <div className="text-2xl font-bold" id="userCount">
-                {JSON.parse(localStorage.getItem("users") || "[]").length}
+                {regularUserCount}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Admin Users</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center">
+              <ShieldCheck className="h-5 w-5 text-muted-foreground mr-2" />
+              <div className="text-2xl font-bold" id="adminCount">
+                {adminCount}
               </div>
             </div>
           </CardContent>
@@ -93,9 +113,10 @@ export default function AdminDashboard() {
         </Card>
       </div>
       
-      <Tabs defaultValue="users" className="space-y-4">
+      <Tabs defaultValue="users" className="space-y-4" value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
           <TabsTrigger value="users">User Management</TabsTrigger>
+          <TabsTrigger value="admins">Admin Management</TabsTrigger>
           <TabsTrigger value="feedback">Feedback & Ratings</TabsTrigger>
         </TabsList>
         
@@ -103,10 +124,22 @@ export default function AdminDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>User Management</CardTitle>
-              <CardDescription>View and manage user accounts</CardDescription>
+              <CardDescription>View and manage regular user accounts</CardDescription>
             </CardHeader>
             <CardContent>
-              <UserManagement />
+              <UserManagement showAdmins={false} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="admins">
+          <Card>
+            <CardHeader>
+              <CardTitle>Admin Management</CardTitle>
+              <CardDescription>View and manage administrator accounts</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <AdminManagement />
             </CardContent>
           </Card>
         </TabsContent>
