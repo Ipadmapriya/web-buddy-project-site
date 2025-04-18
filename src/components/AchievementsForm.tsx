@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +22,7 @@ interface AchievementsFormProps {
 
 const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormProps) => {
   const [achievements, setAchievements] = React.useState<Achievement[]>(
-    initialData && initialData.length > 0
+    initialData.length > 0
       ? initialData
       : [
           {
@@ -68,19 +69,18 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
     <FormSection title="Awards & Achievements" icon={<Trophy className="w-5 h-5 text-white" />}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {achievements.map((achievement, index) => (
-          <div 
-            key={achievement.id} 
-            className="form-inner-box"
-          >
-            <div className="flex justify-between items-center">
-              <h3 className="font-medium text-blue-900">Achievement #{index + 1}</h3>
+          <div key={achievement.id} className="form-inner-box">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-blue-900">
+                Achievement #{index + 1}
+              </h3>
               {achievements.length > 1 && (
                 <Button
                   type="button"
-                  variant="destructive"
+                  variant="ghost"
                   size="sm"
                   onClick={() => handleRemove(achievement.id)}
-                  className="bg-red-100 hover:bg-red-200 text-red-600"
+                  className="remove-button"
                 >
                   <Trash2 className="h-4 w-4 mr-1" /> Remove
                 </Button>
@@ -88,7 +88,7 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
+              <div className="form-input-group">
                 <Label htmlFor={`title-${achievement.id}`}>Title/Award Name</Label>
                 <Input
                   id={`title-${achievement.id}`}
@@ -96,9 +96,11 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
                   onChange={(e) => handleChange(achievement.id, "title", e.target.value)}
                   placeholder="Best Project Award, Dean's List, etc."
                   required
+                  className="form-field"
                 />
               </div>
-              <div className="space-y-2">
+
+              <div className="form-input-group">
                 <Label htmlFor={`organization-${achievement.id}`}>Organization/Issuer</Label>
                 <Input
                   id={`organization-${achievement.id}`}
@@ -106,9 +108,11 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
                   onChange={(e) => handleChange(achievement.id, "organization", e.target.value)}
                   placeholder="University, Company, etc."
                   required
+                  className="form-field"
                 />
               </div>
-              <div className="space-y-2">
+
+              <div className="form-input-group">
                 <Label htmlFor={`date-${achievement.id}`}>Date Achieved</Label>
                 <Input
                   id={`date-${achievement.id}`}
@@ -116,10 +120,12 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
                   onChange={(e) => handleChange(achievement.id, "date", e.target.value)}
                   placeholder="May 2023"
                   required
+                  className="form-field"
                 />
               </div>
             </div>
-            <div className="space-y-2">
+
+            <div className="form-input-group mt-4">
               <Label htmlFor={`description-${achievement.id}`}>Description</Label>
               <Textarea
                 id={`description-${achievement.id}`}
@@ -127,6 +133,7 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
                 onChange={(e) => handleChange(achievement.id, "description", e.target.value)}
                 placeholder="Describe your achievement and its significance"
                 rows={3}
+                className="form-field"
               />
             </div>
           </div>
@@ -135,14 +142,14 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
         <Button 
           type="button" 
           variant="outline" 
-          onClick={handleAddMore} 
+          onClick={handleAddMore}
           className="w-full border-blue-200 hover:bg-blue-50"
         >
           <Plus className="h-4 w-4 mr-2" /> Add Another Achievement
         </Button>
         
         <Button 
-          type="submit" 
+          type="submit"
           className="w-full bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700"
         >
           Save & Continue
