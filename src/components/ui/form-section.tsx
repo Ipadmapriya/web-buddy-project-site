@@ -11,16 +11,32 @@ interface FormSectionProps {
 
 const FormSection = ({ title, children, className, icon }: FormSectionProps) => {
   return (
-    <Card className="w-full overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-blue-600 to-violet-600 p-6">
-        <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
+    <Card className={cn(
+      "w-full overflow-hidden backdrop-blur-sm",
+      "border border-indigo-100/50",
+      "shadow-[0_8px_30px_rgb(0,0,0,0.06)]",
+      "transition-all duration-300",
+      "hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)]",
+      "hover:border-indigo-200/50",
+      "relative",
+      "before:absolute before:inset-0",
+      "before:bg-gradient-to-r before:from-violet-500/5 before:via-transparent before:to-indigo-500/5",
+      "before:rounded-xl before:-z-10",
+      className
+    )}>
+      <CardHeader className="bg-gradient-to-r from-indigo-600 to-violet-600 p-6 relative">
+        <div className="absolute inset-0 bg-[linear-gradient(40deg,transparent_25%,rgba(255,255,255,0.05)_50%,transparent_75%)] opacity-20" />
+        <CardTitle className="text-xl font-bold text-white flex items-center gap-2 relative z-10">
           {icon}
           {title}
         </CardTitle>
       </CardHeader>
       <CardContent className={cn(
-        "p-6 bg-gradient-to-b from-white to-blue-50/30",
-        className
+        "p-6 relative",
+        "bg-gradient-to-b from-white via-white to-indigo-50/30",
+        "after:absolute after:inset-0",
+        "after:bg-gradient-to-b after:from-transparent after:to-white/80",
+        "after:pointer-events-none after:-z-10"
       )}>
         {children}
       </CardContent>
