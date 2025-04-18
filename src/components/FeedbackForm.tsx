@@ -1,11 +1,11 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Star } from "lucide-react";
+import { Star, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { v4 as uuidv4 } from "@/lib/uuid"; // We'll create this simple utility
+import { v4 as uuidv4 } from "@/lib/uuid";
+import FormSection from "@/components/ui/form-section";
 
 interface FeedbackFormProps {
   onSubmit: () => void;
@@ -17,6 +17,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
   const [suggestion, setSuggestion] = useState("");
   const { toast } = useToast();
   const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
     if (rating === 0) {
@@ -27,6 +28,8 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
       });
       return;
     }
+
+    setIsLoading(true);
 
     try {
       // Get existing feedback data or initialize an empty array
@@ -60,51 +63,59 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
         description: "Failed to submit feedback. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <h3 className="text-xl font-semibold mb-4">Rate Your Experience</h3>
-        <div className="flex justify-center space-x-2">
-          {[1, 2, 3, 4, 5].map((index) => (
-            <button
-              key={index}
-              type="button"
-              className="focus:outline-none"
-              onMouseEnter={() => setHoveredRating(index)}
-              onMouseLeave={() => setHoveredRating(0)}
-              onClick={() => setRating(index)}
-            >
-              <Star
-                className={`h-8 w-8 ${
-                  index <= (hoveredRating || rating)
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-gray-300"
-                }`}
-              />
-            </button>
-          ))}
+    <FormSection title="Share Your Feedback" icon={<MessageSquare className="w-5 h-5 text-white" />}>
+      <div className="space-y-6">
+        <div className="text-center">
+          <h3 className="text-xl font-semibold mb-4 text-gray-800">Rate Your Experience</h3>
+          <div className="flex justify-center space-x-2">
+            {[1, 2, 3, 4, 5].map((index) => (
+              <button
+                key={index}
+                type="button"
+                className="focus:outline-none transform transition-transform hover:scale-110"
+                onMouseEnter={() => setHoveredRating(index)}
+                onMouseLeave={() => setHoveredRating(0)}
+                onClick={() => setRating(index)}
+              >
+                <Star
+                  className={`h-8 w-8 ${
+                    index <= (hoveredRating || rating)
+                      ? "fill-yellow-400 text-yellow-400"
+                      : "text-gray-300"
+                  } transition-colors duration-200`}
+                />
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium">
-          Do you have any suggestions for improvement?
-        </label>
-        <Textarea
-          value={suggestion}
-          onChange={(e) => setSuggestion(e.target.value)}
-          placeholder="Share your thoughts..."
-          className="min-h-[100px]"
-        />
-      </div>
+        <div className="space-y-2">
+          <label className="text-gray-700 font-medium">
+            Do you have any suggestions for improvement?
+          </label>
+          <Textarea
+            value={suggestion}
+            onChange={(e) => setSuggestion(e.target.value)}
+            placeholder="Share your thoughts..."
+            className="min-h-[100px] border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
+          />
+        </div>
 
-      <Button onClick={handleSubmit} className="w-full">
-        Submit Feedback
-      </Button>
-    </div>
+        <Button 
+          onClick={handleSubmit} 
+          className="w-full bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700"
+          disabled={isLoading}
+        >
+          {isLoading ? "Submitting..." : "Submit Feedback"}
+        </Button>
+      </div>
+    </FormSection>
   );
 };
 
