@@ -1,8 +1,7 @@
-
 import React, { useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, ArrowLeft, ExternalLink, Mail, Phone, MapPin, Calendar, Building, GraduationCap, Code, Award, Briefcase, Share2 } from "lucide-react";
+import { Download, ArrowLeft, ExternalLink, Mail, Phone, MapPin, Calendar, Building, GraduationCap, Code, Award, Briefcase, Share2, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -139,7 +138,72 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({
       </div>
 
       <div ref={portfolioRef} className="print-container">
-        {/* Professional header section with social links */}
+        {/* Personal Information Section */}
+        <section className="mb-8 print-section">
+          <div className="portfolio-section-header">
+            <User className="h-6 w-6 mr-2 text-blue-600" />
+            <h2 className="text-2xl font-bold text-slate-800">Personal Information</h2>
+          </div>
+          
+          <Card className="portfolio-card overflow-hidden border-l-4 border-l-blue-500">
+            <CardContent className="pt-6">
+              <h3 className="text-2xl font-bold text-blue-700 mb-4">
+                {portfolioData.personal.name || "Your Name"}
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {portfolioData.personal.email && (
+                  <div className="flex items-center text-slate-700">
+                    <Mail className="h-5 w-5 mr-2 text-blue-500" />
+                    <span><span className="font-medium">Email:</span> {portfolioData.personal.email}</span>
+                  </div>
+                )}
+                
+                {portfolioData.personal.phone && (
+                  <div className="flex items-center text-slate-700">
+                    <Phone className="h-5 w-5 mr-2 text-blue-500" />
+                    <span><span className="font-medium">Phone:</span> {portfolioData.personal.phone}</span>
+                  </div>
+                )}
+                
+                {portfolioData.personal.address && (
+                  <div className="flex items-start text-slate-700 col-span-1 md:col-span-2">
+                    <MapPin className="h-5 w-5 mr-2 text-blue-500 mt-0.5 flex-shrink-0" />
+                    <span><span className="font-medium">Address:</span> {portfolioData.personal.address}</span>
+                  </div>
+                )}
+              </div>
+              
+              <div className="mt-6 flex flex-wrap gap-3">
+                {portfolioData.personal.linkedinUrl && (
+                  <a
+                    href={portfolioData.personal.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors px-4 py-2 rounded-md"
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    LinkedIn Profile
+                  </a>
+                )}
+                
+                {portfolioData.personal.githubUrl && (
+                  <a
+                    href={portfolioData.personal.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors px-4 py-2 rounded-md"
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    GitHub Profile
+                  </a>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Header Section (Keeping this for backward compatibility) */}
         <section className="portfolio-header text-primary-foreground p-8 mb-8 shadow-lg border border-indigo-300">
           <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
             {portfolioData.personal.name || "Your Name"}
@@ -190,7 +254,7 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({
           </div>
         </section>
 
-        {/* Education section - Updated with all fields */}
+        {/* Education section */}
         {portfolioData.education.length > 0 && (
           <section className="mb-8 print-section">
             <div className="portfolio-section-header">
@@ -237,7 +301,7 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({
           </section>
         )}
 
-        {/* Internship section with certificate links */}
+        {/* Internship section */}
         {portfolioData.internships && portfolioData.internships.length > 0 && (
           <section className="mb-8 print-section">
             <div className="portfolio-section-header">

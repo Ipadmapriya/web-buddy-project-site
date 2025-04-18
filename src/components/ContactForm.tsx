@@ -1,10 +1,11 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import FormSection from "@/components/ui/form-section";
-import { User } from "lucide-react";
+import { User, Mail, Phone, MapPin, Linkedin, Github } from "lucide-react";
 
 interface ContactFormProps {
   onFormSubmit: (data: any) => void;
@@ -43,7 +44,9 @@ const ContactForm = ({ onFormSubmit, initialData = {} }: ContactFormProps) => {
       <form onSubmit={handleSubmit} className="form-inner-box space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-gray-700 font-medium">Full Name</Label>
+            <Label htmlFor="name" className="text-gray-700 font-medium flex items-center">
+              <User className="w-4 h-4 mr-1 text-blue-500" /> Full Name
+            </Label>
             <Input
               id="name"
               name="name"
@@ -55,7 +58,9 @@ const ContactForm = ({ onFormSubmit, initialData = {} }: ContactFormProps) => {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="phone" className="text-gray-700 font-medium">Phone Number</Label>
+            <Label htmlFor="phone" className="text-gray-700 font-medium flex items-center">
+              <Phone className="w-4 h-4 mr-1 text-blue-500" /> Phone Number
+            </Label>
             <Input
               id="phone"
               name="phone"
@@ -67,7 +72,9 @@ const ContactForm = ({ onFormSubmit, initialData = {} }: ContactFormProps) => {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-gray-700 font-medium">Email Address</Label>
+            <Label htmlFor="email" className="text-gray-700 font-medium flex items-center">
+              <Mail className="w-4 h-4 mr-1 text-blue-500" /> Email Address
+            </Label>
             <Input
               id="email"
               name="email"
@@ -80,7 +87,9 @@ const ContactForm = ({ onFormSubmit, initialData = {} }: ContactFormProps) => {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="linkedinUrl" className="text-gray-700 font-medium">LinkedIn Profile URL</Label>
+            <Label htmlFor="linkedinUrl" className="text-gray-700 font-medium flex items-center">
+              <Linkedin className="w-4 h-4 mr-1 text-blue-500" /> LinkedIn Profile URL
+            </Label>
             <Input
               id="linkedinUrl"
               name="linkedinUrl"
@@ -92,7 +101,9 @@ const ContactForm = ({ onFormSubmit, initialData = {} }: ContactFormProps) => {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="githubUrl" className="text-gray-700 font-medium">GitHub Profile URL</Label>
+            <Label htmlFor="githubUrl" className="text-gray-700 font-medium flex items-center">
+              <Github className="w-4 h-4 mr-1 text-blue-500" /> GitHub Profile URL
+            </Label>
             <Input
               id="githubUrl"
               name="githubUrl"
@@ -105,7 +116,9 @@ const ContactForm = ({ onFormSubmit, initialData = {} }: ContactFormProps) => {
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="address" className="text-gray-700 font-medium">Address</Label>
+          <Label htmlFor="address" className="text-gray-700 font-medium flex items-center">
+            <MapPin className="w-4 h-4 mr-1 text-blue-500" /> Address
+          </Label>
           <Textarea
             id="address"
             name="address"
