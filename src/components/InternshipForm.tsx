@@ -93,22 +93,22 @@ const InternshipForm = ({ onFormSubmit, initialData = [] }: InternshipFormProps)
   };
 
   return (
-    <FormSection title="Internships" icon={<GraduationCap className="w-5 h-5 text-white" />}>
+    <FormSection title="Internships" icon={<GraduationCap className="w-5 h-5" />}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {internships.map((internship, index) => (
           <div 
             key={internship.id} 
-            className="p-4 rounded-lg space-y-4 bg-white/40 border border-blue-100 transition-all duration-300 hover:bg-white/60"
+            className="form-inner-box p-6 space-y-4"
           >
-            <div className="flex justify-between items-center">
-              <h3 className="font-medium text-blue-900">Internship #{index + 1}</h3>
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-lg font-semibold text-blue-900">Internship #{index + 1}</h3>
               {internships.length > 1 && (
                 <Button
                   type="button"
-                  variant="destructive"
+                  variant="ghost"
                   size="sm"
                   onClick={() => handleRemove(internship.id)}
-                  className="bg-red-100 hover:bg-red-200 text-red-600"
+                  className="text-red-500 hover:text-red-600 hover:bg-red-50"
                 >
                   <Trash2 className="h-4 w-4 mr-1" /> Remove
                 </Button>
@@ -116,7 +116,7 @@ const InternshipForm = ({ onFormSubmit, initialData = [] }: InternshipFormProps)
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
+              <div className="form-input-group">
                 <Label htmlFor={`company-${internship.id}`}>Company Name *</Label>
                 <Input
                   id={`company-${internship.id}`}
@@ -124,9 +124,10 @@ const InternshipForm = ({ onFormSubmit, initialData = [] }: InternshipFormProps)
                   onChange={(e) => handleChange(internship.id, "company", e.target.value)}
                   placeholder="Google, Amazon, etc."
                   required
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="form-input-group">
                 <Label htmlFor={`designation-${internship.id}`}>Designation *</Label>
                 <Input
                   id={`designation-${internship.id}`}
@@ -134,65 +135,72 @@ const InternshipForm = ({ onFormSubmit, initialData = [] }: InternshipFormProps)
                   onChange={(e) => handleChange(internship.id, "designation", e.target.value)}
                   placeholder="Software Engineer Intern, etc."
                   required
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="form-input-group">
                 <Label htmlFor={`period-${internship.id}`}>Internship Period *</Label>
                 <Input
                   id={`period-${internship.id}`}
                   value={internship.period}
                   onChange={(e) => handleChange(internship.id, "period", e.target.value)}
-                  placeholder="3 months, Jan 2023 - Mar 2023, etc."
+                  placeholder="3 months, Jan 2023 - Mar 2023"
                   required
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="form-input-group">
                 <Label htmlFor={`team-${internship.id}`}>Team Size</Label>
                 <Input
                   id={`team-${internship.id}`}
                   value={internship.teamSize}
                   onChange={(e) => handleChange(internship.id, "teamSize", e.target.value)}
                   placeholder="5, 10, etc."
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
-              <div className="space-y-2">
+              <div className="form-input-group">
                 <Label htmlFor={`projects-${internship.id}`}>Number of Projects</Label>
                 <Input
                   id={`projects-${internship.id}`}
                   value={internship.projectsCount}
                   onChange={(e) => handleChange(internship.id, "projectsCount", e.target.value)}
                   placeholder="1, 2, etc."
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
+                />
+              </div>
+              <div className="form-input-group">
+                <Label htmlFor={`certificate-${internship.id}`}>Certificate Link</Label>
+                <Input
+                  id={`certificate-${internship.id}`}
+                  value={internship.certificateLink}
+                  onChange={(e) => handleChange(internship.id, "certificateLink", e.target.value)}
+                  placeholder="https://example.com/certificate"
+                  type="url"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor={`role-${internship.id}`}>Part of the Internship Project Operated</Label>
+            <div className="form-input-group">
+              <Label htmlFor={`role-${internship.id}`}>Project Role & Responsibilities</Label>
               <Textarea
                 id={`role-${internship.id}`}
                 value={internship.projectRole}
                 onChange={(e) => handleChange(internship.id, "projectRole", e.target.value)}
                 placeholder="Describe your role and responsibilities in the project"
                 rows={3}
+                className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor={`technologies-${internship.id}`}>Tools & Technologies Learnt</Label>
+            <div className="form-input-group">
+              <Label htmlFor={`technologies-${internship.id}`}>Tools & Technologies Used</Label>
               <Textarea
                 id={`technologies-${internship.id}`}
                 value={internship.technologies}
                 onChange={(e) => handleChange(internship.id, "technologies", e.target.value)}
                 placeholder="React, Node.js, Python, AWS, etc."
                 rows={2}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor={`certificate-${internship.id}`}>Certificate Link</Label>
-              <Input
-                id={`certificate-${internship.id}`}
-                value={internship.certificateLink}
-                onChange={(e) => handleChange(internship.id, "certificateLink", e.target.value)}
-                placeholder="https://example.com/certificate"
-                type="url"
+                className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
               />
             </div>
           </div>
