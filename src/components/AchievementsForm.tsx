@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -69,7 +68,7 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
     <FormSection title="Awards & Achievements" icon={<Trophy className="w-5 h-5 text-white" />}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {achievements.map((achievement, index) => (
-          <div key={achievement.id} className="form-inner-box">
+          <div key={achievement.id} className="achievement-card">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-blue-900">
                 Achievement #{index + 1}
@@ -123,18 +122,18 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
                   className="form-field"
                 />
               </div>
-            </div>
 
-            <div className="form-input-group mt-4">
-              <Label htmlFor={`description-${achievement.id}`}>Description</Label>
-              <Textarea
-                id={`description-${achievement.id}`}
-                value={achievement.description}
-                onChange={(e) => handleChange(achievement.id, "description", e.target.value)}
-                placeholder="Describe your achievement and its significance"
-                rows={3}
-                className="form-field"
-              />
+              <div className="form-input-group md:col-span-2">
+                <Label htmlFor={`description-${achievement.id}`}>Description</Label>
+                <Textarea
+                  id={`description-${achievement.id}`}
+                  value={achievement.description}
+                  onChange={(e) => handleChange(achievement.id, "description", e.target.value)}
+                  placeholder="Describe your achievement and its significance"
+                  rows={3}
+                  className="form-field"
+                />
+              </div>
             </div>
           </div>
         ))}

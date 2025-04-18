@@ -65,7 +65,7 @@ const CertificationsForm = ({ onFormSubmit, initialData = [] }: CertificationsFo
     <FormSection title="Certifications" icon={<Award className="w-5 h-5 text-white" />}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {certifications.map((certification, index) => (
-          <div key={index} className="form-inner-box">
+          <div key={index} className="certification-card">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-blue-900">
                 Certification #{index + 1}
