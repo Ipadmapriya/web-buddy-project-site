@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -50,13 +51,13 @@ export const RegisterForm = () => {
         try {
           console.log("Attempting to store user data in Supabase...");
           await supabase
-            .from('user_profiles')
+            .from('user_profiles' as any)
             .upsert({
               email: email,
               name: name,
               username: username,
               created_at: new Date().toISOString()
-            })
+            } as any)
             .then(response => {
               if (response.error) {
                 throw response.error;

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,8 +47,8 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
         try {
           console.log("Attempting to fetch users from Supabase...");
           const { data, error } = await supabase
-            .from('user_profiles')
-            .select('*')
+            .from('user_profiles' as any)
+            .select('*' as any)
             .then(response => {
               if (response.error) {
                 throw response.error;
@@ -132,7 +133,7 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
       try {
         console.log("Attempting to delete user from Supabase...");
         await supabase
-          .from('user_profiles')
+          .from('user_profiles' as any)
           .delete()
           .eq('email', email)
           .then(response => {

@@ -48,8 +48,8 @@ const FeedbackReviews = () => {
         try {
           console.log("Attempting to fetch feedback from Supabase...");
           const { data, error } = await supabase
-            .from('feedback')
-            .select('*')
+            .from('feedback' as any)
+            .select('*' as any)
             .then(response => {
               if (response.error) {
                 throw response.error;

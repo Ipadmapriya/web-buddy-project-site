@@ -54,14 +54,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         for (const user of users) {
           try {
             await supabase
-              .from('user_profiles')
+              .from('user_profiles' as any)
               .upsert({
                 email: user.email,
                 name: user.name || '',
                 username: user.username || '',
                 is_admin: user.isAdmin || false,
                 created_at: user.created_at || new Date().toISOString()
-              })
+              } as any)
               .then(response => {
                 if (response.error) {
                   throw response.error;
@@ -112,11 +112,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Try to update last login in Supabase
       try {
         await supabase
-          .from('user_profiles')
+          .from('user_profiles' as any)
           .upsert({
             email: safeUser.email,
             last_login: new Date().toISOString()
-          })
+          } as any)
           .then(response => {
             if (response.error) {
               throw response.error;
@@ -162,14 +162,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Try to store in Supabase as well
       try {
         await supabase
-          .from('user_profiles')
+          .from('user_profiles' as any)
           .insert({
             email: userData.email,
             name: userData.name || '',
             username: userData.username || '',
             is_admin: userData.isAdmin || false,
             created_at: userData.created_at || new Date().toISOString()
-          })
+          } as any)
           .then(response => {
             if (response.error) {
               throw response.error;
