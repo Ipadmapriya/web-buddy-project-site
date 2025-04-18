@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import {
@@ -28,7 +27,7 @@ type Feedback = {
   rating: number;
   suggestion: string;
   created_at: string;
-  user_email?: string; // Added for display purposes
+  user_email?: string;
 };
 
 const FeedbackReviews = () => {
@@ -43,19 +42,12 @@ const FeedbackReviews = () => {
     const fetchFeedback = async () => {
       setIsLoading(true);
       try {
-        // Try to fetch from Supabase first
-        let supabaseFeedback: any[] = [];
+        let supabaseFeedback: Feedback[] = [];
         try {
           console.log("Attempting to fetch feedback from Supabase...");
           const { data, error } = await supabase
-            .from('feedback' as any)
-            .select('*' as any)
-            .then(response => {
-              if (response.error) {
-                throw response.error;
-              }
-              return response;
-            });
+            .from('feedback')
+            .select('*');
           
           if (error) throw error;
           supabaseFeedback = data || [];
@@ -65,13 +57,10 @@ const FeedbackReviews = () => {
           console.log("Falling back to localStorage only...");
         }
         
-        // Also get from localStorage as backup
         const localFeedback = JSON.parse(localStorage.getItem("feedback") || "[]");
         
-        // Combine both sources, avoiding duplicates by ID if possible
         const feedbackMap = new Map();
         
-        // Add Supabase feedback
         supabaseFeedback.forEach((item) => {
           feedbackMap.set(item.id, {
             ...item,
@@ -79,7 +68,6 @@ const FeedbackReviews = () => {
           });
         });
         
-        // Add localStorage feedback (only if not already in map)
         localFeedback.forEach((item: Feedback) => {
           if (!feedbackMap.has(item.id)) {
             feedbackMap.set(item.id, {
@@ -89,10 +77,8 @@ const FeedbackReviews = () => {
           }
         });
         
-        // Get users for email display
         const users = JSON.parse(localStorage.getItem("users") || "[]");
         
-        // Convert map to array and enhance with user data
         const combinedFeedback = Array.from(feedbackMap.values()).map((item: any) => {
           const user = users.find((u: any) => u.email === item.user_id);
           return {
@@ -113,17 +99,15 @@ const FeedbackReviews = () => {
   }, []);
 
   useEffect(() => {
-    // Filter feedback based on search term
     const filtered = feedback.filter(
       (item) =>
         (item.user_email && item.user_email.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (item.suggestion && item.suggestion.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredFeedback(filtered);
-    setCurrentPage(1); // Reset to first page when search changes
+    setCurrentPage(1);
   }, [feedback, searchTerm]);
 
-  // Generate star rating display
   function renderStars(rating: number) {
     return (
       <div className="flex">
@@ -139,7 +123,6 @@ const FeedbackReviews = () => {
     );
   }
 
-  // Format date for display
   function formatDate(dateString: string) {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -148,7 +131,6 @@ const FeedbackReviews = () => {
     });
   }
 
-  // Calculate pagination - converted from getter to computed value
   const totalPages = Math.ceil(filteredFeedback.length / itemsPerPage);
 
   return (
@@ -166,7 +148,6 @@ const FeedbackReviews = () => {
         </div>
       </div>
 
-      {/* Feedback Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <Card className="p-4">
           <div className="text-sm text-muted-foreground">Total Feedback</div>

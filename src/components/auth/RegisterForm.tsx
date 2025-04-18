@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -25,16 +24,6 @@ export const RegisterForm = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (password !== confirmPassword) {
-      toast({
-        variant: "destructive",
-        title: "Passwords do not match",
-        description: "Please make sure your passwords match.",
-      });
-      setIsLoading(false);
-      return;
-    }
-
     try {
       if (name && username && email && password) {
         const userData = { 
@@ -47,26 +36,22 @@ export const RegisterForm = () => {
         
         await register(userData);
         
-        // Store additional user data in Supabase
         try {
           console.log("Attempting to store user data in Supabase...");
           await supabase
-            .from('user_profiles' as any)
+            .from('user_profiles')
             .upsert({
-              email: email,
-              name: name,
-              username: username,
+              email,
+              name,
+              username,
               created_at: new Date().toISOString()
-            } as any)
+            })
             .then(response => {
-              if (response.error) {
-                throw response.error;
-              }
+              if (response.error) throw response.error;
               console.log("User data stored in Supabase");
             });
         } catch (supabaseError) {
           console.error("Supabase storage error:", supabaseError);
-          console.log("Using local storage only");
         }
         
         toast({
@@ -74,12 +59,6 @@ export const RegisterForm = () => {
           description: "You have successfully registered.",
         });
         navigate("/");
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Missing information",
-          description: "Please fill in all fields.",
-        });
       }
     } catch (error: any) {
       toast({

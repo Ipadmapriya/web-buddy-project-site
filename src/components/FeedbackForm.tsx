@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -42,10 +41,8 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
         created_at: new Date().toISOString()
       };
       
-      // First, try to store in Supabase but catch any errors
       try {
         console.log("Attempting to store feedback in Supabase...");
-        // Wrapped in try-catch to prevent TypeScript errors if table doesn't exist
         await supabase
           .from('feedback')
           .insert({
@@ -53,7 +50,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
             rating: rating,
             suggestion: suggestion,
             created_at: new Date().toISOString()
-          } as any) // Use type assertion to bypass TypeScript errors
+          })
           .then(response => {
             if (response.error) {
               throw response.error;
@@ -63,12 +60,12 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
       } catch (supabaseError) {
         console.error("Supabase storage error:", supabaseError);
         console.log("Falling back to localStorage...");
+        
+        // Store in localStorage as backup
+        const existingFeedback = JSON.parse(localStorage.getItem("feedback") || "[]");
+        existingFeedback.push(newFeedback);
+        localStorage.setItem("feedback", JSON.stringify(existingFeedback));
       }
-      
-      // Also store in localStorage as backup
-      const existingFeedback = JSON.parse(localStorage.getItem("feedback") || "[]");
-      existingFeedback.push(newFeedback);
-      localStorage.setItem("feedback", JSON.stringify(existingFeedback));
 
       toast({
         title: "Thank you for your feedback!",
@@ -89,7 +86,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <FormSection title="Share Your Feedback" icon={<MessageSquare className="w-5 h-5 text-white" />}>
+    <FormSection title="Share Your Feedback" icon={<MessageSquare className="w-5 h-5 text-white" />} >
       <div className="form-inner-box space-y-6">
         <div className="text-center">
           <h3 className="text-xl font-semibold mb-4 text-gray-800">Rate Your Experience</h3>

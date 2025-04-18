@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -26,14 +25,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing user in localStorage
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
     setIsLoading(false);
     
-    // Initialize admin user if it doesn't exist yet
     const users = JSON.parse(localStorage.getItem("users") || "[]");
     if (!users.some((u: any) => u.email === "admin@example.com")) {
       const adminUser = {
@@ -46,30 +43,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem("users", JSON.stringify(users));
     }
     
-    // Try to synchronize with Supabase
     const syncUsersWithSupabase = async () => {
       try {
         console.log("Attempting to sync users with Supabase...");
-        // For each user in localStorage, ensure they exist in Supabase
         for (const user of users) {
           try {
             await supabase
-              .from('user_profiles' as any)
+              .from('user_profiles')
               .upsert({
                 email: user.email,
                 name: user.name || '',
                 username: user.username || '',
                 is_admin: user.isAdmin || false,
                 created_at: user.created_at || new Date().toISOString()
-              } as any)
+              })
               .then(response => {
-                if (response.error) {
-                  throw response.error;
-                }
+                if (response.error) throw response.error;
               });
           } catch (error) {
             console.error("Error syncing user to Supabase:", error);
-            // Continue with next user
           }
         }
       } catch (error) {
@@ -83,7 +75,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      // Mock login - Check if user exists in localStorage
       const users = JSON.parse(localStorage.getItem("users") || "[]");
       
       console.log("Users in storage:", users);
@@ -101,7 +92,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error("Invalid credentials");
       }
       
-      // Create a user object without the password
       const { password: _, ...safeUser } = user;
       
       console.log("Login successful, user:", safeUser);
@@ -109,14 +99,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(safeUser);
       localStorage.setItem("user", JSON.stringify(safeUser));
       
-      // Try to update last login in Supabase
       try {
         await supabase
-          .from('user_profiles' as any)
+          .from('user_profiles')
           .upsert({
             email: safeUser.email,
             last_login: new Date().toISOString()
-          } as any)
+          })
           .then(response => {
             if (response.error) {
               throw response.error;
@@ -136,40 +125,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (userData: any) => {
     setIsLoading(true);
     try {
-      // Mock registration - Store in localStorage
       const users = JSON.parse(localStorage.getItem("users") || "[]");
       
-      // Check if user with this email already exists
       if (users.some((u: any) => u.email === userData.email)) {
         throw new Error("User with this email already exists");
       }
       
-      // Create user object including password for authentication
       const newUser = { 
         ...userData,
-        // Set default isAdmin value to false
         isAdmin: userData.email === "admin@example.com" ? true : false,
-        // Ensure created_at is included
         created_at: userData.created_at || new Date().toISOString(),
-        // Ensure password is explicitly included
         password: userData.password 
       };
       
-      // Store complete user data (including password) for authentication purposes
       users.push(newUser);
       localStorage.setItem("users", JSON.stringify(users));
       
-      // Try to store in Supabase as well
       try {
         await supabase
-          .from('user_profiles' as any)
+          .from('user_profiles')
           .insert({
             email: userData.email,
             name: userData.name || '',
             username: userData.username || '',
             is_admin: userData.isAdmin || false,
             created_at: userData.created_at || new Date().toISOString()
-          } as any)
+          })
           .then(response => {
             if (response.error) {
               throw response.error;
@@ -178,10 +159,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
       } catch (error) {
         console.error("Error storing user in Supabase:", error);
-        // Continue with localStorage only if Supabase fails
       }
       
-      // Create a user object without the password for the session
       const { password: _, ...safeUser } = newUser;
       
       setUser(safeUser);
