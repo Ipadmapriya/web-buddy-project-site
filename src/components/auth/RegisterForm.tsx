@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -49,16 +48,24 @@ export const RegisterForm = () => {
         
         // Store additional user data in Supabase
         try {
-          console.log("Storing user data in Supabase...");
-          await supabase.from('user_profiles').upsert({
-            email: email,
-            name: name,
-            username: username,
-            created_at: new Date().toISOString()
-          }).eq('email', email);
+          console.log("Attempting to store user data in Supabase...");
+          await supabase
+            .from('user_profiles')
+            .upsert({
+              email: email,
+              name: name,
+              username: username,
+              created_at: new Date().toISOString()
+            })
+            .then(response => {
+              if (response.error) {
+                throw response.error;
+              }
+              console.log("User data stored in Supabase");
+            });
         } catch (supabaseError) {
           console.error("Supabase storage error:", supabaseError);
-          // Continue with local storage if Supabase fails
+          console.log("Using local storage only");
         }
         
         toast({

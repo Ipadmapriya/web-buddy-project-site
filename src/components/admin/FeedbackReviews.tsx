@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import {
@@ -46,12 +45,23 @@ const FeedbackReviews = () => {
         // Try to fetch from Supabase first
         let supabaseFeedback: any[] = [];
         try {
-          const { data, error } = await supabase.from('feedback').select('*');
+          console.log("Attempting to fetch feedback from Supabase...");
+          const { data, error } = await supabase
+            .from('feedback')
+            .select('*')
+            .then(response => {
+              if (response.error) {
+                throw response.error;
+              }
+              return response;
+            });
+          
           if (error) throw error;
           supabaseFeedback = data || [];
           console.log("Supabase feedback:", supabaseFeedback);
         } catch (error) {
           console.error("Error fetching from Supabase:", error);
+          console.log("Falling back to localStorage only...");
         }
         
         // Also get from localStorage as backup
@@ -112,13 +122,8 @@ const FeedbackReviews = () => {
     setCurrentPage(1); // Reset to first page when search changes
   }, [feedback, searchTerm]);
 
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredFeedback.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedFeedback = filteredFeedback.slice(startIndex, startIndex + itemsPerPage);
-
   // Generate star rating display
-  const renderStars = (rating: number) => {
+  function renderStars(rating: number) {
     return (
       <div className="flex">
         {Array.from({ length: 5 }).map((_, index) => (
@@ -131,16 +136,21 @@ const FeedbackReviews = () => {
         ))}
       </div>
     );
-  };
+  }
 
   // Format date for display
-  const formatDate = (dateString: string) => {
+  function formatDate(dateString: string) {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
     });
-  };
+  }
+
+  // Calculate pagination
+  get totalPages() {
+    return Math.ceil(filteredFeedback.length / itemsPerPage);
+  }
 
   return (
     <div className="space-y-4">
@@ -192,8 +202,11 @@ const FeedbackReviews = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedFeedback.length > 0 ? (
-              paginatedFeedback.map((item) => (
+            {filteredFeedback.length > 0 ? (
+              filteredFeedback.slice(
+                (currentPage - 1) * itemsPerPage,
+                currentPage * itemsPerPage
+              ).map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.user_email}</TableCell>
                   <TableCell>{renderStars(item.rating)}</TableCell>

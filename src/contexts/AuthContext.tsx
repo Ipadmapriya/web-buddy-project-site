@@ -49,17 +49,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Try to synchronize with Supabase
     const syncUsersWithSupabase = async () => {
       try {
-        console.log("Syncing users with Supabase...");
+        console.log("Attempting to sync users with Supabase...");
         // For each user in localStorage, ensure they exist in Supabase
         for (const user of users) {
           try {
-            await supabase.from('user_profiles').upsert({
-              email: user.email,
-              name: user.name || '',
-              username: user.username || '',
-              is_admin: user.isAdmin || false,
-              created_at: user.created_at || new Date().toISOString()
-            }).eq('email', user.email);
+            await supabase
+              .from('user_profiles')
+              .upsert({
+                email: user.email,
+                name: user.name || '',
+                username: user.username || '',
+                is_admin: user.isAdmin || false,
+                created_at: user.created_at || new Date().toISOString()
+              })
+              .then(response => {
+                if (response.error) {
+                  throw response.error;
+                }
+              });
           } catch (error) {
             console.error("Error syncing user to Supabase:", error);
             // Continue with next user
@@ -104,10 +111,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       // Try to update last login in Supabase
       try {
-        await supabase.from('user_profiles').upsert({
-          email: safeUser.email,
-          last_login: new Date().toISOString()
-        }).eq('email', safeUser.email);
+        await supabase
+          .from('user_profiles')
+          .upsert({
+            email: safeUser.email,
+            last_login: new Date().toISOString()
+          })
+          .then(response => {
+            if (response.error) {
+              throw response.error;
+            }
+          });
       } catch (error) {
         console.error("Error updating last login:", error);
       }
@@ -147,16 +161,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       // Try to store in Supabase as well
       try {
-        const { data, error } = await supabase.from('user_profiles').insert({
-          email: userData.email,
-          name: userData.name || '',
-          username: userData.username || '',
-          is_admin: userData.isAdmin || false,
-          created_at: userData.created_at || new Date().toISOString()
-        });
-        
-        if (error) throw error;
-        console.log("User registered in Supabase:", data);
+        await supabase
+          .from('user_profiles')
+          .insert({
+            email: userData.email,
+            name: userData.name || '',
+            username: userData.username || '',
+            is_admin: userData.isAdmin || false,
+            created_at: userData.created_at || new Date().toISOString()
+          })
+          .then(response => {
+            if (response.error) {
+              throw response.error;
+            }
+            console.log("User registered in Supabase");
+          });
       } catch (error) {
         console.error("Error storing user in Supabase:", error);
         // Continue with localStorage only if Supabase fails

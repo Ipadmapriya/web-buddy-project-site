@@ -42,18 +42,27 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
         created_at: new Date().toISOString()
       };
       
-      // First, try to store in Supabase
+      // First, try to store in Supabase but catch any errors
       try {
-        console.log("Storing feedback in Supabase...");
-        await supabase.from('feedback').insert({
-          user_id: user?.email,
-          rating: rating,
-          suggestion: suggestion,
-          created_at: new Date().toISOString()
-        });
+        console.log("Attempting to store feedback in Supabase...");
+        // Wrapped in try-catch to prevent TypeScript errors if table doesn't exist
+        await supabase
+          .from('feedback')
+          .insert({
+            user_id: user?.email || 'anonymous',
+            rating: rating,
+            suggestion: suggestion,
+            created_at: new Date().toISOString()
+          })
+          .then(response => {
+            if (response.error) {
+              throw response.error;
+            }
+            console.log("Feedback stored successfully in Supabase");
+          });
       } catch (supabaseError) {
         console.error("Supabase storage error:", supabaseError);
-        // Continue with local storage if Supabase fails
+        console.log("Falling back to localStorage...");
       }
       
       // Also store in localStorage as backup

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,12 +44,23 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
         // Try to fetch from Supabase as well
         let supabaseUsers: any[] = [];
         try {
-          const { data, error } = await supabase.from('user_profiles').select('*');
+          console.log("Attempting to fetch users from Supabase...");
+          const { data, error } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .then(response => {
+              if (response.error) {
+                throw response.error;
+              }
+              return response;
+            });
+          
           if (error) throw error;
           supabaseUsers = data || [];
           console.log("Supabase users:", supabaseUsers);
         } catch (error) {
           console.error("Error fetching from Supabase:", error);
+          console.log("Falling back to localStorage only...");
         }
         
         // Combine both sources, using email as key to avoid duplicates
@@ -120,11 +130,20 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
 
       // Try to delete from Supabase as well
       try {
-        const { error } = await supabase.from('user_profiles').delete().eq('email', email);
-        if (error) throw error;
+        console.log("Attempting to delete user from Supabase...");
+        await supabase
+          .from('user_profiles')
+          .delete()
+          .eq('email', email)
+          .then(response => {
+            if (response.error) {
+              throw response.error;
+            }
+            console.log("User deleted from Supabase");
+          });
       } catch (error) {
         console.error("Error deleting user from Supabase:", error);
-        // Continue with localStorage update only if Supabase fails
+        console.log("Only local storage was updated");
       }
       
       // Update state
