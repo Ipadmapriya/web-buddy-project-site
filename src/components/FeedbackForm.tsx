@@ -32,10 +32,8 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
     setIsLoading(true);
 
     try {
-      // Get existing feedback data or initialize an empty array
       const existingFeedback = JSON.parse(localStorage.getItem("feedback") || "[]");
       
-      // Create new feedback entry
       const newFeedback = {
         id: uuidv4(),
         user_id: user?.email,
@@ -44,10 +42,8 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
         created_at: new Date().toISOString()
       };
       
-      // Add to existing feedback
       existingFeedback.push(newFeedback);
       
-      // Save to localStorage
       localStorage.setItem("feedback", JSON.stringify(existingFeedback));
 
       toast({
@@ -70,7 +66,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
 
   return (
     <FormSection title="Share Your Feedback" icon={<MessageSquare className="w-5 h-5 text-white" />}>
-      <div className="space-y-6">
+      <div className="form-inner-box space-y-6">
         <div className="text-center">
           <h3 className="text-xl font-semibold mb-4 text-gray-800">Rate Your Experience</h3>
           <div className="flex justify-center space-x-2">

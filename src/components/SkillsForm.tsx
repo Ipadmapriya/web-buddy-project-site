@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -140,7 +139,7 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
     <FormSection title="Skills & Interests" icon={<Star className="w-5 h-5 text-white" />}>
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="space-y-6">
-          <div className="bg-white/60 rounded-lg p-6 border border-blue-100 shadow-sm">
+          <div className="form-inner-box">
             <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-blue-800">
               <Wrench className="w-5 h-5 text-blue-600" />
               Technical Skills
@@ -210,7 +209,7 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
             </div>
           </div>
 
-          <div className="bg-white/60 rounded-lg p-6 border border-purple-100 shadow-sm">
+          <div className="form-inner-box">
             <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-purple-800">
               <Star className="w-5 h-5 text-purple-600" />
               Soft Skills
@@ -267,7 +266,7 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
             </div>
           </div>
 
-          <div className="bg-white/60 rounded-lg p-6 border border-green-100 shadow-sm">
+          <div className="form-inner-box">
             <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-green-800">
               <Heart className="w-5 h-5 text-green-600" />
               Interests & Hobbies

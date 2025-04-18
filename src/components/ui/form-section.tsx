@@ -13,14 +13,14 @@ const FormSection = ({ title, children, className, icon }: FormSectionProps) => 
   return (
     <Card className={cn(
       "w-full overflow-hidden backdrop-blur-sm",
-      "border border-indigo-100/50",
-      "shadow-[0_8px_30px_rgb(0,0,0,0.06)]",
+      "border-2 border-indigo-200/50",
+      "shadow-[0_8px_30px_rgb(0,0,0,0.08)]",
       "transition-all duration-300",
-      "hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)]",
-      "hover:border-indigo-200/50",
+      "hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]",
+      "hover:border-indigo-300/50",
       "relative",
       "before:absolute before:inset-0",
-      "before:bg-gradient-to-r before:from-violet-500/5 before:via-transparent before:to-indigo-500/5",
+      "before:bg-gradient-to-r before:from-violet-500/10 before:via-transparent before:to-indigo-500/10",
       "before:rounded-xl before:-z-10",
       className
     )}>

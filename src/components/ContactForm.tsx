@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -41,7 +40,7 @@ const ContactForm = ({ onFormSubmit, initialData = {} }: ContactFormProps) => {
 
   return (
     <FormSection title="Personal Information" icon={<User className="w-5 h-5 text-white" />}>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="form-inner-box space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="name" className="text-gray-700 font-medium">Full Name</Label>

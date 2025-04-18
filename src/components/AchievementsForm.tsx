@@ -70,7 +70,7 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
         {achievements.map((achievement, index) => (
           <div 
             key={achievement.id} 
-            className="p-4 rounded-lg space-y-4 bg-white/40 border border-blue-100 transition-all duration-300 hover:bg-white/60"
+            className="form-inner-box"
           >
             <div className="flex justify-between items-center">
               <h3 className="font-medium text-blue-900">Achievement #{index + 1}</h3>
