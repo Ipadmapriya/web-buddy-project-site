@@ -12,16 +12,8 @@ interface FormSectionProps {
 const FormSection = ({ title, children, className, icon }: FormSectionProps) => {
   return (
     <Card className={cn(
-      "w-full overflow-hidden backdrop-blur-sm",
-      "border-2 border-indigo-200/50",
-      "shadow-[0_8px_30px_rgb(0,0,0,0.08)]",
-      "transition-all duration-300",
-      "hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]",
-      "hover:border-indigo-300/50",
-      "relative",
-      "before:absolute before:inset-0",
-      "before:bg-gradient-to-r before:from-violet-500/10 before:via-transparent before:to-indigo-500/10",
-      "before:rounded-xl before:-z-10",
+      "form-inner-box",
+      "overflow-hidden backdrop-blur-sm",
       className
     )}>
       <CardHeader className="bg-gradient-to-r from-indigo-600 to-violet-600 p-6 relative">
@@ -34,9 +26,6 @@ const FormSection = ({ title, children, className, icon }: FormSectionProps) => 
       <CardContent className={cn(
         "p-6 relative",
         "bg-gradient-to-b from-white via-white to-indigo-50/30",
-        "after:absolute after:inset-0",
-        "after:bg-gradient-to-b after:from-transparent after:to-white/80",
-        "after:pointer-events-none after:-z-10"
       )}>
         {children}
       </CardContent>
