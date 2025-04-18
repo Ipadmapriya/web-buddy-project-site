@@ -11,21 +11,23 @@ interface FormSectionProps {
 
 const FormSection = ({ title, children, className, icon }: FormSectionProps) => {
   return (
-    <Card className={cn(
-      "form-inner-box",
-      "overflow-hidden",
-      className
-    )}>
-      <CardHeader className="bg-indigo-600 p-6 relative">
-        <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
-          {icon}
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-6 space-y-6">
-        {children}
-      </CardContent>
-    </Card>
+    <div className="space-y-6">
+      <Card className={cn(
+        "form-inner-box",
+        "p-4 rounded-lg bg-white/40 border border-blue-100 transition-all duration-300 hover:bg-white/60",
+        className
+      )}>
+        <CardHeader className="p-4">
+          <CardTitle className="text-xl font-bold text-blue-900 flex items-center gap-2">
+            {icon}
+            {title}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-4 space-y-6">
+          {children}
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
