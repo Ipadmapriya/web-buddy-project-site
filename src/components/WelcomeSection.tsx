@@ -43,10 +43,10 @@ interface WelcomeSectionProps {
 
 const WelcomeSection: React.FC<WelcomeSectionProps> = ({ onTypeSelect }) => {
   return (
-    <div className="min-h-[80vh] bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col items-center justify-center p-8">
-      <div className="max-w-4xl w-full space-y-8">
+    <div className="min-h-[80vh] bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col items-center justify-center px-4 py-12 sm:p-8">
+      <div className="max-w-5xl w-full space-y-12">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800">
+          <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
             Create Your Professional Portfolio
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -60,17 +60,22 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ onTypeSelect }) => {
             return (
               <Card
                 key={type.value}
-                className="group p-6 hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm border-blue-100"
+                className="group p-6 hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-sm border-blue-100 overflow-visible"
               >
                 <Button
                   variant="ghost"
-                  className="w-full h-auto p-6 flex flex-col items-center gap-4 hover:bg-blue-50/50"
+                  className="w-full h-auto p-6 flex flex-col items-center gap-6 hover:bg-blue-50/50"
                   onClick={() => onTypeSelect(type.value)}
                 >
-                  <Icon className="h-12 w-12 text-blue-600 group-hover:scale-110 transition-transform duration-300" />
-                  <div className="space-y-2 text-center">
+                  <div className="relative">
+                    <div className="absolute -inset-2 bg-blue-100 rounded-full blur-lg group-hover:bg-blue-200 transition-colors duration-300" />
+                    <Icon className="relative h-12 w-12 text-blue-600 group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                  <div className="space-y-3 text-center">
                     <h3 className="text-xl font-semibold text-gray-800">{type.label}</h3>
-                    <p className="text-sm text-gray-600">{type.description}</p>
+                    <p className="text-sm text-gray-600 leading-relaxed line-clamp-2 hover:line-clamp-none transition-all duration-300">
+                      {type.description}
+                    </p>
                   </div>
                 </Button>
               </Card>
