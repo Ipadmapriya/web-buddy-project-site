@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -78,7 +79,25 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    background-image: linear-gradient(to right top, #f0f4ff, #f5f6ff, #f9f8ff, #fcfbff, #fefeff);
   }
+}
+
+/* Background Patterns */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(100, 116, 139, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100, 116, 139, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-dots-pattern {
+  background-image: radial-gradient(rgba(100, 116, 139, 0.1) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.bg-waves-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264.888-.14 1.652-1.1 2.782-2.83 3.456-4.74.225-.62.306-1.29.306-2.06 0-.79-.112-1.45-.337-2.07-.225-.62-.57-1.23-1.04-1.81-.368-.46-.816-.86-1.346-1.20l.03-.04c.305-.43.51-.86.63-1.26.144-.51.205-1.02.205-1.59 0-.56-.067-1.06-.2-1.5-.134-.44-.335-.82-.635-1.13-.304-.32-.68-.57-1.13-.74-.45-.18-.97-.26-1.58-.26h-7.87v-3.52c0-.41-.11-.75-.32-1.04-.22-.28-.5-.42-.83-.42-.37 0-.65.11-.89.35-.25.23-.38.55-.38.95v3.67H4.15c-.6 0-1.12.08-1.58.26-.45.17-.84.41-1.13.73-.31.32-.53.7-.68 1.14-.14.44-.21.94-.21 1.5s.07 1.05.21 1.49c.15.44.36.82.63 1.14l.04.05c-.39.33-.7.73-.91 1.18-.22.46-.33.95-.33 1.5 0 .55.11 1.03.32 1.46.21.42.5.77.86 1.05.36.27.77.47 1.22.59.45.11.93.17 1.43.17h9.05v3.83c0 .41.1.76.31 1.04.2.28.47.42.82.42.34 0 .62-.15.85-.44.23-.29.34-.63.34-1.03v-3.83h7.92c.58 0 1.09-.09 1.54-.26.45-.18.84-.42 1.17-.74.33-.31.58-.69.76-1.12.17-.43.26-.92.26-1.46 0-.53-.09-1-.26-1.43-.17-.43-.42-.79-.76-1.11-.33-.3-.72-.53-1.17-.7zM2.66 13.82c-.23.16-.5.25-.8.25-.31 0-.59-.08-.82-.25-.23-.16-.35-.38-.35-.64 0-.26.12-.48.35-.64.23-.16.51-.25.82-.25.31 0 .58.08.81.24.23.17.35.39.35.64 0 .27-.12.49-.35.65zm18.48-5.42c.27.15.4.36.4.62 0 .27-.13.47-.4.62-.28.15-.64.23-1.07.23h-5.11v-1.69h5.11c.43-.01.79.07 1.07.22zm0 5.69c.27.15.4.36.4.63 0 .26-.14.47-.41.62-.27.15-.63.22-1.07.22h-5.09v-1.69h5.1c.43 0 .79.07 1.07.22zm-10.17.64c-.39-.16-.65-.36-.78-.61-.13-.24-.19-.55-.19-.92 0-.37.06-.68.19-.92.13-.24.39-.44.78-.6.39-.17.89-.25 1.48-.25.59 0 1.08.08 1.48.25.39.16.65.36.78.6.13.24.2.55.2.92 0 .37-.07.68-.2.92-.13.25-.39.45-.78.61-.4.16-.89.25-1.48.25-.59-.01-1.09-.09-1.48-.25z' fill='%23c6dbfb' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
 /* Education Card Gradient Styles */
@@ -212,6 +231,27 @@ input:hover, textarea:hover {
   }
 }
 
+/* Animation Keyframes */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slideInFromBottom {
+  0% { transform: translateY(10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInFromLeft {
+  0% { transform: translateX(-10px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 /* Professional Gradient Backgrounds */
 .auth-gradient {
   background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%);
@@ -268,6 +308,7 @@ input:focus, textarea:focus, select:focus {
 .auth-card {
   @apply bg-white rounded-xl shadow-xl border border-gray-100 p-8 w-full max-w-md;
   background: linear-gradient(to bottom, #ffffff, #f8fafc);
+  animation: scaleIn 0.5s ease forwards;
 }
 
 .auth-input {
@@ -292,4 +333,105 @@ input:focus, textarea:focus, select:focus {
 .hover-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* General Wrapper Gradients */
+.common-gradient-bg {
+  background: linear-gradient(135deg, rgba(239, 246, 255, 0.6) 0%, rgba(219, 234, 254, 0.6) 100%);
+}
+
+.subtle-paper-bg {
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.03'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Global UI Refinements */
+.form-container {
+  @apply border border-blue-100 rounded-xl p-6 shadow-md bg-white;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, #3b82f6, #6366f1);
+  z-index: 1;
+}
+
+.form-header {
+  @apply text-xl font-bold mb-4 pb-2 border-b border-gray-200;
+  color: #1e40af;
+}
+
+/* Animated elements */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideInFromBottom 0.5s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInFromLeft 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+/* Global UI Components */
+.section-title {
+  @apply text-xl font-bold text-blue-800 mb-4 flex items-center;
+}
+
+.section-title svg {
+  @apply mr-2 text-blue-600;
+}
+
+/* Progress steps styling */
+.progress-step {
+  @apply flex flex-col items-center relative;
+}
+
+.progress-step-active {
+  @apply text-blue-600;
+}
+
+.progress-step-completed {
+  @apply text-green-500;
+}
+
+.progress-step-inactive {
+  @apply text-gray-400;
+}
+
+.progress-line {
+  @apply h-1 bg-gray-200 flex-1;
+}
+
+.progress-line-completed {
+  @apply h-full bg-green-500 transition-all duration-300;
+}
+
+/* Global form controls */
+.form-control {
+  @apply mb-4;
+}
+
+.form-control-label {
+  @apply block text-sm font-medium text-gray-700 mb-1;
+}
+
+.form-control-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+}
+
+.form-submit-button {
+  @apply w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-2 px-4 rounded transition-all duration-300 hover:shadow-lg;
 }
