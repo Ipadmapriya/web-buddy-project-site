@@ -92,7 +92,7 @@ const CertificationsForm = ({ onFormSubmit, initialData = [] }: CertificationsFo
                   onChange={(e) => handleChange(index, "course_name", e.target.value)}
                   placeholder="Enter course name"
                   required
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
 
@@ -104,7 +104,7 @@ const CertificationsForm = ({ onFormSubmit, initialData = [] }: CertificationsFo
                   onChange={(e) => handleChange(index, "issuing_institution", e.target.value)}
                   placeholder="Enter institution name"
                   required
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
 
@@ -116,7 +116,7 @@ const CertificationsForm = ({ onFormSubmit, initialData = [] }: CertificationsFo
                   value={certification.issue_date}
                   onChange={(e) => handleChange(index, "issue_date", e.target.value)}
                   required
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
 
@@ -128,7 +128,7 @@ const CertificationsForm = ({ onFormSubmit, initialData = [] }: CertificationsFo
                   value={certification.completion_date}
                   onChange={(e) => handleChange(index, "completion_date", e.target.value)}
                   required
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
 
@@ -140,7 +140,7 @@ const CertificationsForm = ({ onFormSubmit, initialData = [] }: CertificationsFo
                   onChange={(e) => handleChange(index, "duration", e.target.value)}
                   placeholder="e.g., 6 months"
                   required
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
 
@@ -151,7 +151,7 @@ const CertificationsForm = ({ onFormSubmit, initialData = [] }: CertificationsFo
                   value={certification.student_id}
                   onChange={(e) => handleChange(index, "student_id", e.target.value)}
                   placeholder="Enter ID/Roll number"
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
 
@@ -163,7 +163,7 @@ const CertificationsForm = ({ onFormSubmit, initialData = [] }: CertificationsFo
                   onChange={(e) => handleChange(index, "credential_link", e.target.value)}
                   placeholder="Enter credential URL"
                   type="url"
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
             </div>

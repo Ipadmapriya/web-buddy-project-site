@@ -96,7 +96,7 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
                   onChange={(e) => handleChange(achievement.id, "title", e.target.value)}
                   placeholder="Best Project Award, Dean's List, etc."
                   required
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
 
@@ -108,7 +108,7 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
                   onChange={(e) => handleChange(achievement.id, "organization", e.target.value)}
                   placeholder="University, Company, etc."
                   required
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
 
@@ -120,7 +120,7 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
                   onChange={(e) => handleChange(achievement.id, "date", e.target.value)}
                   placeholder="May 2023"
                   required
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
 
@@ -132,7 +132,7 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
                   onChange={(e) => handleChange(achievement.id, "description", e.target.value)}
                   placeholder="Describe your achievement and its significance"
                   rows={3}
-                  className="form-field"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300 rounded-md"
                 />
               </div>
             </div>
