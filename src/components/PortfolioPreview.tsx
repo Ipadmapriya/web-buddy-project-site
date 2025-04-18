@@ -203,57 +203,6 @@ const PortfolioPreview: React.FC<PortfolioPreviewProps> = ({
           </Card>
         </section>
 
-        {/* Header Section (Keeping this for backward compatibility) */}
-        <section className="portfolio-header text-primary-foreground p-8 mb-8 shadow-lg border border-indigo-300">
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
-            {portfolioData.personal.name || "Your Name"}
-          </h1>
-          <div className="mt-4 flex flex-wrap gap-4">
-            {portfolioData.personal.email && (
-              <div className="flex items-center bg-white/10 px-3 py-1 rounded-full text-sm">
-                <Mail className="h-4 w-4 mr-2" />
-                <span>{portfolioData.personal.email}</span>
-              </div>
-            )}
-            {portfolioData.personal.phone && (
-              <div className="flex items-center bg-white/10 px-3 py-1 rounded-full text-sm">
-                <Phone className="h-4 w-4 mr-2" />
-                <span>{portfolioData.personal.phone}</span>
-              </div>
-            )}
-            {portfolioData.personal.address && (
-              <div className="flex items-center bg-white/10 px-3 py-1 rounded-full text-sm">
-                <MapPin className="h-4 w-4 mr-2" />
-                <span>{portfolioData.personal.address}</span>
-              </div>
-            )}
-          </div>
-          <div className="mt-4 flex flex-wrap gap-4">
-            {portfolioData.personal.linkedinUrl && (
-              <a
-                href={portfolioData.personal.linkedinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-primary-foreground hover:underline bg-blue-500/30 px-3 py-1 rounded-full text-sm transition-colors hover:bg-blue-500/40"
-              >
-                <ExternalLink className="h-4 w-4 mr-2" />
-                LinkedIn Profile
-              </a>
-            )}
-            {portfolioData.personal.githubUrl && (
-              <a
-                href={portfolioData.personal.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-primary-foreground hover:underline bg-blue-500/30 px-3 py-1 rounded-full text-sm transition-colors hover:bg-blue-500/40"
-              >
-                <ExternalLink className="h-4 w-4 mr-2" />
-                GitHub Profile
-              </a>
-            )}
-          </div>
-        </section>
-
         {/* Education section */}
         {portfolioData.education.length > 0 && (
           <section className="mb-8 print-section">
