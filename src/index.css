@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -211,4 +210,86 @@ input:hover, textarea:hover {
     break-inside: avoid;
     page-break-inside: avoid;
   }
+}
+
+/* Professional Gradient Backgrounds */
+.auth-gradient {
+  background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%);
+}
+
+.form-container-gradient {
+  background: linear-gradient(to right, #ffffff, #f8fafc);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.page-gradient {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+/* Form Card Styling */
+.form-card {
+  @apply bg-white rounded-lg shadow-lg border border-gray-100;
+  background: linear-gradient(to bottom, #ffffff, #f8fafc);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Input Enhancements */
+input:focus, textarea:focus, select:focus {
+  @apply ring-2 ring-blue-200 border-blue-300;
+  transition: all 0.2s ease;
+}
+
+/* Button Gradients */
+.btn-gradient-primary {
+  @apply bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white transition-all duration-300;
+}
+
+.btn-gradient-secondary {
+  @apply bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-800 transition-all duration-300;
+}
+
+/* Section Headers */
+.section-header {
+  @apply bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 p-4 rounded-t-lg;
+}
+
+/* Authentication Pages */
+.auth-container {
+  background: linear-gradient(135deg, #f6f9fc 0%, #edf2f7 100%);
+  min-height: 100vh;
+  @apply flex items-center justify-center p-4;
+}
+
+.auth-card {
+  @apply bg-white rounded-xl shadow-xl border border-gray-100 p-8 w-full max-w-md;
+  background: linear-gradient(to bottom, #ffffff, #f8fafc);
+}
+
+.auth-input {
+  @apply bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 w-full focus:ring-2 focus:ring-blue-200 focus:border-blue-300 transition-all duration-200;
+}
+
+/* Professional Form Sections */
+.form-section {
+  @apply mb-8 rounded-lg border border-gray-100 overflow-hidden;
+  background: linear-gradient(to bottom, #ffffff, #f8fafc);
+}
+
+.form-section-header {
+  @apply bg-gradient-to-r from-gray-50 to-gray-100 p-4 border-b border-gray-200;
+}
+
+/* Card Hover Effects */
+.hover-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }

@@ -11,10 +11,8 @@ export default function Auth() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      // Redirect admin users to admin dashboard, others to home
       if (user.isAdmin) {
         navigate("/admin");
       } else {
@@ -24,21 +22,20 @@ export default function Auth() {
   }, [user, navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md p-6">
-        <h1 className="text-2xl font-bold text-center mb-6">
-          {isLogin ? "Login to Your Account" : "Create New Account"}
+    <div className="auth-container">
+      <Card className="auth-card">
+        <h1 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          {isLogin ? "Welcome Back" : "Create Your Account"}
         </h1>
         
         {isLogin ? <LoginForm /> : <RegisterForm />}
         
-        <div className="mt-4 text-center">
+        <div className="mt-6 text-center">
           <button 
             onClick={() => setIsLogin(!isLogin)} 
-            className="text-primary hover:underline"
-            type="button"
+            className="text-blue-600 hover:text-blue-700 transition-colors text-sm font-medium hover:underline"
           >
-            {isLogin ? "Don't have an account? Register" : "Already have an account? Login"}
+            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
           </button>
         </div>
       </Card>
