@@ -5,6 +5,7 @@ import { Plus, Briefcase } from "lucide-react";
 import FormSection from "@/components/ui/form-section";
 import WorkExperienceEntry, { WorkExperience } from "./work-experience/WorkExperienceEntry";
 import { useWorkExperiences } from "@/hooks/useWorkExperiences";
+import { useToast } from "@/hooks/use-toast";
 
 interface WorkExperienceFormProps {
   onFormSubmit: (data: WorkExperience[]) => void;
@@ -12,10 +13,25 @@ interface WorkExperienceFormProps {
 }
 
 const WorkExperienceForm = ({ onFormSubmit, initialData = [] }: WorkExperienceFormProps) => {
+  const { toast } = useToast();
   const { experiences, handleChange, handleAddMore, handleRemove } = useWorkExperiences(initialData);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const hasEmptyRequiredFields = experiences.some(
+      experience => !experience.company || !experience.designation || !experience.yearsExperience
+    );
+    
+    if (hasEmptyRequiredFields) {
+      toast({
+        variant: "destructive",
+        title: "Missing information",
+        description: "Please fill in all required fields (Company, Designation, and Years of Experience).",
+      });
+      return;
+    }
+    
     onFormSubmit(experiences);
   };
 
