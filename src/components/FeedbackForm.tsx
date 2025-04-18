@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { v4 as uuidv4 } from "@/lib/uuid";
 import FormSection from "@/components/ui/form-section";
+import { supabase } from "@/integrations/supabase/client";
 
 interface FeedbackFormProps {
   onSubmit: () => void;
@@ -32,8 +34,6 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
     setIsLoading(true);
 
     try {
-      const existingFeedback = JSON.parse(localStorage.getItem("feedback") || "[]");
-      
       const newFeedback = {
         id: uuidv4(),
         user_id: user?.email,
@@ -42,8 +42,23 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
         created_at: new Date().toISOString()
       };
       
-      existingFeedback.push(newFeedback);
+      // First, try to store in Supabase
+      try {
+        console.log("Storing feedback in Supabase...");
+        await supabase.from('feedback').insert({
+          user_id: user?.email,
+          rating: rating,
+          suggestion: suggestion,
+          created_at: new Date().toISOString()
+        });
+      } catch (supabaseError) {
+        console.error("Supabase storage error:", supabaseError);
+        // Continue with local storage if Supabase fails
+      }
       
+      // Also store in localStorage as backup
+      const existingFeedback = JSON.parse(localStorage.getItem("feedback") || "[]");
+      existingFeedback.push(newFeedback);
       localStorage.setItem("feedback", JSON.stringify(existingFeedback));
 
       toast({

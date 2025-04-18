@@ -20,6 +20,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { supabase } from "@/integrations/supabase/client";
 
 type Feedback = {
   id: string;
@@ -35,26 +36,69 @@ const FeedbackReviews = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFeedback, setFilteredFeedback] = useState<Feedback[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 5;
 
   useEffect(() => {
-    // Mock loading feedback data from localStorage
-    const mockFeedback = localStorage.getItem("feedback");
-    const feedbackData = mockFeedback ? JSON.parse(mockFeedback) : [];
+    const fetchFeedback = async () => {
+      setIsLoading(true);
+      try {
+        // Try to fetch from Supabase first
+        let supabaseFeedback: any[] = [];
+        try {
+          const { data, error } = await supabase.from('feedback').select('*');
+          if (error) throw error;
+          supabaseFeedback = data || [];
+          console.log("Supabase feedback:", supabaseFeedback);
+        } catch (error) {
+          console.error("Error fetching from Supabase:", error);
+        }
+        
+        // Also get from localStorage as backup
+        const localFeedback = JSON.parse(localStorage.getItem("feedback") || "[]");
+        
+        // Combine both sources, avoiding duplicates by ID if possible
+        const feedbackMap = new Map();
+        
+        // Add Supabase feedback
+        supabaseFeedback.forEach((item) => {
+          feedbackMap.set(item.id, {
+            ...item,
+            user_email: item.user_id
+          });
+        });
+        
+        // Add localStorage feedback (only if not already in map)
+        localFeedback.forEach((item: Feedback) => {
+          if (!feedbackMap.has(item.id)) {
+            feedbackMap.set(item.id, {
+              ...item,
+              user_email: item.user_id
+            });
+          }
+        });
+        
+        // Get users for email display
+        const users = JSON.parse(localStorage.getItem("users") || "[]");
+        
+        // Convert map to array and enhance with user data
+        const combinedFeedback = Array.from(feedbackMap.values()).map((item: any) => {
+          const user = users.find((u: any) => u.email === item.user_id);
+          return {
+            ...item,
+            user_email: user ? user.email : item.user_id || "Unknown User",
+          };
+        });
+        
+        setFeedback(combinedFeedback);
+      } catch (error) {
+        console.error("Error loading feedback:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     
-    // Get user emails to display alongside feedback
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-    
-    // Combine feedback data with user emails
-    const enhancedFeedback = feedbackData.map((item: Feedback) => {
-      const user = users.find((u: any) => u.email === item.user_id);
-      return {
-        ...item,
-        user_email: user ? user.email : "Unknown User",
-      };
-    });
-    
-    setFeedback(enhancedFeedback);
+    fetchFeedback();
   }, []);
 
   useEffect(() => {

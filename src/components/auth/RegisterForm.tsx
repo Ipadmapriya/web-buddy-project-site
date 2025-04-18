@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 export const RegisterForm = () => {
   const [name, setName] = useState("");
@@ -17,7 +18,7 @@ export const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const navigate = useNavigate(); // Ensure this line is present
+  const navigate = useNavigate();
   const { register } = useAuth();
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -40,10 +41,26 @@ export const RegisterForm = () => {
           name, 
           username, 
           email, 
-          password
+          password,
+          created_at: new Date().toISOString() 
         };
         
         await register(userData);
+        
+        // Store additional user data in Supabase
+        try {
+          console.log("Storing user data in Supabase...");
+          await supabase.from('user_profiles').upsert({
+            email: email,
+            name: name,
+            username: username,
+            created_at: new Date().toISOString()
+          }).eq('email', email);
+        } catch (supabaseError) {
+          console.error("Supabase storage error:", supabaseError);
+          // Continue with local storage if Supabase fails
+        }
+        
         toast({
           title: "Account created",
           description: "You have successfully registered.",

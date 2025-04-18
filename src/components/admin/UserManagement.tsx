@@ -13,6 +13,7 @@ import {
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Search, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 type User = {
   email: string;
@@ -20,6 +21,7 @@ type User = {
   username?: string;
   userType?: string;
   isAdmin: boolean;
+  created_at?: string;
 };
 
 interface UserManagementProps {
@@ -30,19 +32,73 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load users from localStorage
-    const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
-    const safeUsers = storedUsers
-      .filter((user: any) => showAdmins ? user.isAdmin : !user.isAdmin) // Filter based on showAdmins prop
-      .map((user: any) => {
-        const { password, ...safeUser } = user;
-        return safeUser;
-      });
-    setUsers(safeUsers);
-  }, [showAdmins]);
+    const loadUsers = async () => {
+      setIsLoading(true);
+      try {
+        // Load users from localStorage
+        const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
+        
+        // Try to fetch from Supabase as well
+        let supabaseUsers: any[] = [];
+        try {
+          const { data, error } = await supabase.from('user_profiles').select('*');
+          if (error) throw error;
+          supabaseUsers = data || [];
+          console.log("Supabase users:", supabaseUsers);
+        } catch (error) {
+          console.error("Error fetching from Supabase:", error);
+        }
+        
+        // Combine both sources, using email as key to avoid duplicates
+        const usersMap = new Map();
+        
+        // Add localStorage users first
+        storedUsers.forEach((user: any) => {
+          if (showAdmins ? user.isAdmin : !user.isAdmin) { // Filter based on showAdmins prop
+            const { password, ...safeUser } = user;
+            usersMap.set(user.email, safeUser);
+          }
+        });
+        
+        // Add or update with Supabase users
+        supabaseUsers.forEach((user) => {
+          if (showAdmins ? user.is_admin : !user.is_admin) { // Filter based on showAdmins prop
+            const mappedUser = {
+              email: user.email,
+              name: user.name,
+              username: user.username,
+              isAdmin: user.is_admin,
+              created_at: user.created_at
+            };
+            
+            // Only add/update if matches the admin filter
+            usersMap.set(user.email, {
+              ...usersMap.get(user.email),
+              ...mappedUser
+            });
+          }
+        });
+        
+        const combinedUsers = Array.from(usersMap.values());
+        setUsers(combinedUsers);
+      } catch (error) {
+        console.error("Error loading users:", error);
+        toast({
+          variant: "destructive",
+          title: "Error loading users",
+          description: "There was a problem loading user data."
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadUsers();
+  }, [showAdmins, toast]);
 
   useEffect(() => {
     // Filter users based on search term
@@ -55,20 +111,38 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
     setFilteredUsers(filtered);
   }, [users, searchTerm]);
 
-  const handleDeleteUser = (email: string) => {
-    // Delete user from localStorage
-    const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
-    const updatedUsers = storedUsers.filter((user: any) => user.email !== email);
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
+  const handleDeleteUser = async (email: string) => {
+    try {
+      // Delete user from localStorage
+      const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
+      const updatedUsers = storedUsers.filter((user: any) => user.email !== email);
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
 
-    // Update state
-    const updatedSafeUsers = users.filter((user) => user.email !== email);
-    setUsers(updatedSafeUsers);
+      // Try to delete from Supabase as well
+      try {
+        const { error } = await supabase.from('user_profiles').delete().eq('email', email);
+        if (error) throw error;
+      } catch (error) {
+        console.error("Error deleting user from Supabase:", error);
+        // Continue with localStorage update only if Supabase fails
+      }
+      
+      // Update state
+      const updatedSafeUsers = users.filter((user) => user.email !== email);
+      setUsers(updatedSafeUsers);
 
-    toast({
-      title: "User deleted",
-      description: `User with email ${email} has been deleted.`,
-    });
+      toast({
+        title: "User deleted",
+        description: `User with email ${email} has been deleted.`,
+      });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast({
+        variant: "destructive",
+        title: "Error deleting user",
+        description: "There was a problem deleting the user."
+      });
+    }
   };
 
   return (
