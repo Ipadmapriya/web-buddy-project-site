@@ -65,8 +65,8 @@ const CertificationsForm = ({ onFormSubmit, initialData = [] }: CertificationsFo
     <FormSection title="Certifications" icon={<Award className="w-5 h-5 text-white" />}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {certifications.map((certification, index) => (
-          <div key={index} className="certification-card">
-            <div className="flex justify-between items-center mb-4">
+          <div key={index} className="form-section">
+            <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-semibold text-blue-900">
                 Certification #{index + 1}
               </h3>
@@ -83,7 +83,7 @@ const CertificationsForm = ({ onFormSubmit, initialData = [] }: CertificationsFo
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-input-group">
                 <Label htmlFor={`course-${index}`}>Course Name</Label>
                 <Input

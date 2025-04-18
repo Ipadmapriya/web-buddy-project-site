@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -68,8 +69,8 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
     <FormSection title="Awards & Achievements" icon={<Trophy className="w-5 h-5 text-white" />}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {achievements.map((achievement, index) => (
-          <div key={achievement.id} className="achievement-card">
-            <div className="flex justify-between items-center mb-4">
+          <div key={achievement.id} className="form-section">
+            <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-semibold text-blue-900">
                 Achievement #{index + 1}
               </h3>
@@ -86,7 +87,7 @@ const AchievementsForm = ({ onFormSubmit, initialData = [] }: AchievementsFormPr
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-input-group">
                 <Label htmlFor={`title-${achievement.id}`}>Title/Award Name</Label>
                 <Input
