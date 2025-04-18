@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -71,12 +72,12 @@ const LanguagesForm = ({ onFormSubmit, initialData = [] }: LanguagesFormProps) =
   };
 
   return (
-    <FormSection title="Languages" icon={<Languages className="w-5 h-5 text-white" />}>
+    <FormSection title="Languages" icon={<Languages className="w-5 h-5" />}>
       <div className="space-y-6">
         {languages.map((language, index) => (
           <div 
             key={index} 
-            className="p-4 rounded-lg space-y-4 bg-white/40 border border-blue-100 transition-all duration-300 hover:bg-white/60"
+            className="form-inner-box p-4 space-y-4"
           >
             <div className="flex justify-between items-center">
               <h3 className="font-medium text-blue-900">Language {index + 1}</h3>
@@ -101,6 +102,7 @@ const LanguagesForm = ({ onFormSubmit, initialData = [] }: LanguagesFormProps) =
                   onChange={(e) => handleChange(index, "language_name", e.target.value)}
                   placeholder="Enter language name"
                   required
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
 
@@ -110,7 +112,7 @@ const LanguagesForm = ({ onFormSubmit, initialData = [] }: LanguagesFormProps) =
                   value={language.reading_proficiency}
                   onValueChange={(value) => handleChange(index, "reading_proficiency", value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300">
                     <SelectValue placeholder="Select proficiency" />
                   </SelectTrigger>
                   <SelectContent>
@@ -129,7 +131,7 @@ const LanguagesForm = ({ onFormSubmit, initialData = [] }: LanguagesFormProps) =
                   value={language.writing_proficiency}
                   onValueChange={(value) => handleChange(index, "writing_proficiency", value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300">
                     <SelectValue placeholder="Select proficiency" />
                   </SelectTrigger>
                   <SelectContent>
@@ -148,7 +150,7 @@ const LanguagesForm = ({ onFormSubmit, initialData = [] }: LanguagesFormProps) =
                   value={language.speaking_proficiency}
                   onValueChange={(value) => handleChange(index, "speaking_proficiency", value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300">
                     <SelectValue placeholder="Select proficiency" />
                   </SelectTrigger>
                   <SelectContent>

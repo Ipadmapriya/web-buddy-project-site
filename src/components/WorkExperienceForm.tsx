@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -77,12 +78,12 @@ const WorkExperienceForm = ({ onFormSubmit, initialData = [] }: WorkExperienceFo
   };
 
   return (
-    <FormSection title="Work Experience" icon={<Briefcase className="w-5 h-5 text-white" />}>
+    <FormSection title="Work Experience" icon={<Briefcase className="w-5 h-5" />}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {experiences.map((experience, index) => (
           <div 
             key={experience.id} 
-            className="p-4 rounded-lg space-y-4 bg-white/40 border border-blue-100 transition-all duration-300 hover:bg-white/60"
+            className="form-inner-box p-4 space-y-4"
           >
             <div className="flex justify-between items-center">
               <h3 className="font-medium text-blue-900">Experience #{index + 1}</h3>

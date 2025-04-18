@@ -136,10 +136,10 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
   };
 
   return (
-    <FormSection title="Skills & Interests" icon={<Star className="w-5 h-5 text-white" />}>
+    <FormSection title="Skills & Interests" icon={<Star className="w-5 h-5" />}>
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="space-y-6">
-          <div className="form-inner-box">
+          <div className="form-inner-box p-4">
             <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-blue-800">
               <Wrench className="w-5 h-5 text-blue-600" />
               Technical Skills
@@ -209,7 +209,7 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
             </div>
           </div>
 
-          <div className="form-inner-box">
+          <div className="form-inner-box p-4">
             <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-purple-800">
               <Star className="w-5 h-5 text-purple-600" />
               Soft Skills
@@ -218,14 +218,14 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
               {softSkills.map((skill) => (
                 <div 
                   key={skill.id} 
-                  className="flex items-center space-x-4 p-4 rounded-lg bg-white/80 border border-purple-50 transition-all duration-300 hover:bg-white/90"
+                  className="flex items-center space-x-4 p-4 rounded-lg bg-white/80 border border-blue-50 transition-all duration-300 hover:bg-white/90"
                 >
                   <div className="flex-1">
                     <Input
                       value={skill.name}
                       onChange={(e) => handleSoftSkillChange(skill.id, "name", e.target.value)}
                       placeholder="Communication, Leadership, etc."
-                      className="border-purple-100 focus:border-purple-200"
+                      className="border-blue-100 focus:border-blue-200"
                       required
                     />
                   </div>
@@ -233,7 +233,7 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
                     <select
                       value={skill.proficiency}
                       onChange={(e) => handleSoftSkillChange(skill.id, "proficiency", e.target.value)}
-                      className="w-full h-10 rounded-md border border-purple-100 bg-white px-3 py-2 text-sm focus:border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-100"
+                      className="w-full h-10 rounded-md border border-blue-100 bg-white px-3 py-2 text-sm focus:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-100"
                     >
                       <option value="Beginner">Beginner</option>
                       <option value="Intermediate">Intermediate</option>
@@ -259,14 +259,14 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
                 variant="outline" 
                 size="sm" 
                 onClick={handleAddSoft}
-                className="w-full border-purple-200 hover:bg-purple-50 text-purple-700"
+                className="w-full border-blue-200 hover:bg-blue-50 text-blue-700"
               >
                 <Plus className="h-4 w-4 mr-2" /> Add Soft Skill
               </Button>
             </div>
           </div>
 
-          <div className="form-inner-box">
+          <div className="form-inner-box p-4">
             <h3 className="text-lg font-medium mb-4 flex items-center gap-2 text-green-800">
               <Heart className="w-5 h-5 text-green-600" />
               Interests & Hobbies
@@ -277,14 +277,14 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
                 {interests.map((interest, index) => (
                   <div 
                     key={index} 
-                    className="flex items-center space-x-4 p-4 rounded-lg bg-white/80 border border-green-50 transition-all duration-300 hover:bg-white/90"
+                    className="flex items-center space-x-4 p-4 rounded-lg bg-white/80 border border-blue-50 transition-all duration-300 hover:bg-white/90"
                   >
                     <div className="flex-1">
                       <Input
                         value={interest}
                         onChange={(e) => handleInterestChange(index, e.target.value)}
                         placeholder="Reading, Photography, etc."
-                        className="border-green-100 focus:border-green-200"
+                        className="border-blue-100 focus:border-blue-200"
                       />
                     </div>
                     {interests.length > 1 && (
@@ -305,7 +305,7 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
                   variant="outline" 
                   size="sm" 
                   onClick={handleAddInterest}
-                  className="w-full border-green-200 hover:bg-green-50 text-green-700"
+                  className="w-full border-blue-200 hover:bg-blue-50 text-green-700"
                 >
                   <Plus className="h-4 w-4 mr-2" /> Add Interest
                 </Button>
@@ -316,14 +316,14 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
                 {hobbies.map((hobby, index) => (
                   <div 
                     key={index} 
-                    className="flex items-center space-x-4 p-4 rounded-lg bg-white/80 border border-green-50 transition-all duration-300 hover:bg-white/90"
+                    className="flex items-center space-x-4 p-4 rounded-lg bg-white/80 border border-blue-50 transition-all duration-300 hover:bg-white/90"
                   >
                     <div className="flex-1">
                       <Input
                         value={hobby}
                         onChange={(e) => handleHobbyChange(index, e.target.value)}
                         placeholder="Cooking, Hiking, etc."
-                        className="border-green-100 focus:border-green-200"
+                        className="border-blue-100 focus:border-blue-200"
                       />
                     </div>
                     {hobbies.length > 1 && (
@@ -344,7 +344,7 @@ const SkillsForm = ({ onFormSubmit, initialData }: SkillsFormProps) => {
                   variant="outline" 
                   size="sm" 
                   onClick={handleAddHobby}
-                  className="w-full border-green-200 hover:bg-green-50 text-green-700"
+                  className="w-full border-blue-200 hover:bg-blue-50 text-green-700"
                 >
                   <Plus className="h-4 w-4 mr-2" /> Add Hobby
                 </Button>

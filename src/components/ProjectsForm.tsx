@@ -75,7 +75,7 @@ const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => 
   };
 
   return (
-    <FormSection title="Projects" icon={<FolderGit2 className="w-5 h-5 text-white" />}>
+    <FormSection title="Projects" icon={<FolderGit2 className="w-5 h-5" />}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {projects.map((project, index) => (
           <div 
@@ -83,7 +83,7 @@ const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => 
             className="form-inner-box p-6 space-y-4"
           >
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold text-indigo-900">Project #{index + 1}</h3>
+              <h3 className="text-lg font-semibold text-blue-900">Project #{index + 1}</h3>
               {projects.length > 1 && (
                 <Button
                   type="button"
@@ -106,6 +106,7 @@ const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => 
                   onChange={(e) => handleChange(project.id, "name", e.target.value)}
                   placeholder="My Amazing Project"
                   required
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
               <div className="form-input-group">
@@ -115,6 +116,7 @@ const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => 
                   value={project.githubLink}
                   onChange={(e) => handleChange(project.id, "githubLink", e.target.value)}
                   placeholder="https://github.com/username/project"
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
               <div className="form-input-group">
@@ -124,6 +126,7 @@ const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => 
                   value={project.teamSize}
                   onChange={(e) => handleChange(project.id, "teamSize", e.target.value)}
                   placeholder="3, 5, etc."
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
               <div className="form-input-group">
@@ -134,6 +137,7 @@ const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => 
                   onChange={(e) => handleChange(project.id, "duration", e.target.value)}
                   placeholder="2 months, 1 year, etc."
                   required
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
               <div className="form-input-group">
@@ -144,6 +148,7 @@ const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => 
                   onChange={(e) => handleChange(project.id, "role", e.target.value)}
                   placeholder="Frontend Developer, Team Lead, etc."
                   required
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
               <div className="form-input-group">
@@ -154,6 +159,7 @@ const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => 
                   onChange={(e) => handleChange(project.id, "completedDate", e.target.value)}
                   placeholder="May 2023"
                   required
+                  className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
                 />
               </div>
             </div>
@@ -166,6 +172,7 @@ const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => 
                 placeholder="Describe your project in detail"
                 rows={3}
                 required
+                className="border-blue-100 focus:border-blue-300 bg-white/50 transition-all duration-300"
               />
             </div>
           </div>
@@ -175,14 +182,14 @@ const ProjectsForm = ({ onFormSubmit, initialData = [] }: ProjectsFormProps) => 
           type="button" 
           variant="outline" 
           onClick={handleAddMore} 
-          className="w-full form-inner-box py-3 flex items-center justify-center gap-2 hover:bg-indigo-50"
+          className="w-full form-inner-box py-3 flex items-center justify-center gap-2 hover:bg-blue-50"
         >
           <Plus className="h-4 w-4" /> Add Another Project
         </Button>
         
         <Button 
           type="submit" 
-          className="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white"
+          className="w-full bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white"
         >
           Save & Continue
         </Button>
