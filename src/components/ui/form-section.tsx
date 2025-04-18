@@ -19,7 +19,7 @@ const FormSection = ({ title, children, className, icon }: FormSectionProps) => 
       )}>
         <CardHeader className="p-4">
           <CardTitle className="text-xl font-bold text-blue-900 flex items-center gap-2">
-            {icon}
+            {icon && <span className="text-blue-900">{icon}</span>}
             {title}
           </CardTitle>
         </CardHeader>
