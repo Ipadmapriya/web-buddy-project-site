@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { v4 as uuidv4 } from "@/lib/uuid";
 
 export const RegisterForm = () => {
   const [name, setName] = useState("");
@@ -38,9 +40,11 @@ export const RegisterForm = () => {
         
         try {
           console.log("Attempting to store user data in Supabase...");
+          const userId = uuidv4();
           await supabase
             .from('user_profiles')
             .upsert({
+              id: userId,
               email,
               name,
               username,

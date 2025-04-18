@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,9 +34,10 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
     setIsLoading(true);
 
     try {
+      const feedbackId = uuidv4();
       const newFeedback = {
-        id: uuidv4(),
-        user_id: user?.email,
+        id: feedbackId,
+        user_id: user?.email || 'anonymous',
         rating,
         suggestion,
         created_at: new Date().toISOString()
@@ -46,6 +48,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onSubmit }) => {
         await supabase
           .from('feedback')
           .insert({
+            id: feedbackId,
             user_id: user?.email || 'anonymous',
             rating: rating,
             suggestion: suggestion,

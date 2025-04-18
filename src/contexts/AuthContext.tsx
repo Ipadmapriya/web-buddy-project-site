@@ -1,5 +1,7 @@
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { v4 as uuidv4 } from "@/lib/uuid";
 
 type UserType = {
   name?: string;
@@ -48,9 +50,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log("Attempting to sync users with Supabase...");
         for (const user of users) {
           try {
+            const userId = uuidv4();
             await supabase
               .from('user_profiles')
               .upsert({
+                id: userId,
                 email: user.email,
                 name: user.name || '',
                 username: user.username || '',
@@ -100,9 +104,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem("user", JSON.stringify(safeUser));
       
       try {
+        const userId = uuidv4();
         await supabase
           .from('user_profiles')
           .upsert({
+            id: userId,
             email: safeUser.email,
             last_login: new Date().toISOString()
           })
@@ -142,9 +148,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem("users", JSON.stringify(users));
       
       try {
+        const userId = uuidv4();
         await supabase
           .from('user_profiles')
           .insert({
+            id: userId,
             email: userData.email,
             name: userData.name || '',
             username: userData.username || '',
