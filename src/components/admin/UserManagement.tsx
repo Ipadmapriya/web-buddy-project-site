@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Search, Trash2 } from "lucide-react";
+import { Search, Trash2, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -33,6 +33,7 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -123,6 +124,7 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
   }, [users, searchTerm]);
 
   const handleDeleteUser = async (email: string) => {
+    setIsDeleting(email);
     try {
       // Delete user from localStorage
       const storedUsers = JSON.parse(localStorage.getItem("users") || "[]");
@@ -162,6 +164,8 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
         title: "Error deleting user",
         description: "There was a problem deleting the user."
       });
+    } finally {
+      setIsDeleting(null);
     }
   };
 
@@ -193,7 +197,16 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredUsers.length > 0 ? (
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={showAdmins ? 5 : 6} className="h-24 text-center">
+                  <div className="flex justify-center items-center">
+                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                    Loading users...
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : filteredUsers.length > 0 ? (
               filteredUsers.map((user) => (
                 <TableRow key={user.email}>
                   <TableCell>{user.email}</TableCell>
@@ -207,9 +220,13 @@ const UserManagement = ({ showAdmins = false }: UserManagementProps) => {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          disabled={user.email === "admin@example.com"}
+                          disabled={user.email === "admin@example.com" || isDeleting === user.email}
                         >
-                          <Trash2 className="h-4 w-4 text-destructive" />
+                          {isDeleting === user.email ? (
+                            <Loader2 className="h-4 w-4 animate-spin text-destructive" />
+                          ) : (
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          )}
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
