@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Trash2, GraduationCap, BookOpen } from "lucide-react";
-import { FormSection } from "@/components/ui/form-section";
+import FormSection from "@/components/ui/form-section";
 
 interface Education {
   id: string;
