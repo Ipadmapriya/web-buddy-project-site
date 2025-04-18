@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import {
@@ -147,10 +148,8 @@ const FeedbackReviews = () => {
     });
   }
 
-  // Calculate pagination
-  get totalPages() {
-    return Math.ceil(filteredFeedback.length / itemsPerPage);
-  }
+  // Calculate pagination - converted from getter to computed value
+  const totalPages = Math.ceil(filteredFeedback.length / itemsPerPage);
 
   return (
     <div className="space-y-4">
